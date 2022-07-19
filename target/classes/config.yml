@@ -1,0 +1,54 @@
+identifier: config
+
+#Performance Settings:
+#- The spacing for block check
+blockCheckSpacing: 0.6
+
+#- The spacing for trail particle
+trailSpacing: 0.3
+
+#- The bias for trail particle, distance from muzzle
+trailBias: 1
+
+#- The initial value for transition step
+trailTransitionStart: 1.0
+
+#- The factor for transition step
+trailTransitionFactor: 0.6
+
+#Control Settings:
+#- Press shift key to scope, and press right key to change fire-mode
+switchShiftAndRightKey: false
+
+
+#Properties:
+#- The multiplier for scoping recoil and inaccuracy
+scopeRecoilMultiplier: 0.5
+scopeInaccuracyMultiplier: 0.5
+
+#- The normal state muzzle particle position
+muzzleNormalBias: 0.01^-0.007^0.05
+
+#- The scope state muzzle particle position
+muzzleScopeBias: 0.00^-0.015^0.08
+
+#- Headshot Multiplier
+headShotMultiplier: 20
+
+#- Force hand animation when semi firing with no scope
+forceUpdateWhenNormalSemiFire: false
+
+#- Breakable blocks and their health
+breakableBlockMap:
+  - OAK_PLANKS^20
+  - SPRUCE_PLANKS^20
+  - DARK_OAK_PLANKS^20
+
+#- Replaceable Blocks and what to replace[Must be breakable]
+replaceableBlockMap:
+  - DARK_OAK_PLANKS^OAK_PLANKS
+
+#- Penetrable blocks and their attenuation[the damage decreased is its damage taken, must be breakable]
+penetrableBlockMap:
+  - SPRUCE_PLANKS^0.5
+
