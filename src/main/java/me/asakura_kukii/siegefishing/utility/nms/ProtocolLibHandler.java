@@ -27,6 +27,7 @@ public class ProtocolLibHandler {
             protocolManager.removePacketListeners(SiegeFishing.pluginInstance);
             initRemoveArmSwing();
             initAimCrossBow();
+
         }
     }
 

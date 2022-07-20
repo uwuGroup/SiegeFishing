@@ -40,6 +40,7 @@ me\asakura_kukii\siegefishing\loader\file\LureIO$Map.class
 me\asakura_kukii\siegefishing\handler\item\rod\RodData.class
 me\asakura_kukii\siegefishing\handler\item\gun\fire\FullAutoHandler$1.class
 me\asakura_kukii\siegefishing\handler\item\gun\fire\FiringHandler$3.class
+me\asakura_kukii\siegefishing\loader\file\ChunkIO.class
 me\asakura_kukii\siegefishing\handler\item\gun\util\CarryingHandler.class
 me\asakura_kukii\siegefishing\loader\file\FishIO.class
 me\asakura_kukii\siegefishing\handler\item\gun\reload\Reload.class

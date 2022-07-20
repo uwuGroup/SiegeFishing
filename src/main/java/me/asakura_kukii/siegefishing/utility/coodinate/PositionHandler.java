@@ -1,14 +1,67 @@
 package me.asakura_kukii.siegefishing.utility.coodinate;
 
+import com.comphenix.protocol.PacketType;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.Particle;
+import org.bukkit.entity.*;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
+
+import java.util.Objects;
+import java.util.UUID;
 
 import static java.lang.StrictMath.atan2;
 import static java.lang.StrictMath.hypot;
 
 public class PositionHandler {
+
+    public static Entity generateArmorStandStack(Player p, UUID uuid, int length) {
+        UUID previous = uuid;
+
+
+
+
+
+
+
+        for (int i = 0; i < length; i++) {
+            Entity e = Bukkit.getServer().getEntity(previous);
+            if (e == null) {
+                break;
+            }
+            ArmorStand aS = (ArmorStand) e.getWorld().spawnEntity(e.getLocation(), EntityType.ARMOR_STAND);
+            aS.setInvisible(true);
+            aS.setMarker(true);
+            aS.setInvulnerable(true);
+            aS.addScoreboardTag("armor_stand_node");
+            e.addPassenger(aS);
+            p.sendMessage("added one to" + e.getName() + e.getPassengers());
+            previous = aS.getUniqueId();
+        }
+        return Bukkit.getServer().getEntity(previous);
+    }
+
+    public static void rotateArmorStandStack(Entity e, Float yaw, Float pitch) {
+        for (Entity p : e.getPassengers()) {
+            if (p instanceof ArmorStand) {
+                p.setRotation(yaw, pitch);
+                rotateArmorStandStack(p, yaw, pitch);
+            }
+        }
+    }
+
+    public static void deleteArmorStandStack(Entity e) {
+        for (Entity p : e.getPassengers()) {
+            if (p instanceof ArmorStand) {
+                deleteArmorStandStack(p);
+            }
+        }
+        if (e instanceof ArmorStand) {
+            e.remove();
+        }
+    }
+
     public static EulerAngle convertVectorToEulerAngle(Vector vec) {
         double yaw = -atan2(vec.getX(), vec.getZ());
         double pitch = -atan2(vec.getY(), hypot(vec.getX(), vec.getZ()));

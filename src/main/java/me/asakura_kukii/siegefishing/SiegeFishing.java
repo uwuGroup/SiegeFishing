@@ -1,27 +1,33 @@
 package me.asakura_kukii.siegefishing;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.events.PacketContainer;
 import me.asakura_kukii.siegefishing.handler.nonitem.method.projectile.ProjectileHandler;
 import me.asakura_kukii.siegefishing.handler.nonitem.player.PlayerData;
 import me.asakura_kukii.siegefishing.handler.nonitem.player.InputHandler;
 import me.asakura_kukii.siegefishing.handler.nonitem.player.PlayerHandler;
 import me.asakura_kukii.siegefishing.handler.nonitem.block.BlockHandler;
 import me.asakura_kukii.siegefishing.loader.common.FileIO;
+import me.asakura_kukii.siegefishing.utility.coodinate.PositionHandler;
 import me.asakura_kukii.siegefishing.utility.nms.ProtocolLibHandler;
 import me.asakura_kukii.siegefishing.listener.*;
 import me.asakura_kukii.siegefishing.loader.*;
 import me.asakura_kukii.siegefishing.loader.ConfigIO;
 import me.asakura_kukii.siegefishing.loader.common.FileHandler;
 import org.bukkit.*;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.EulerAngle;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import java.io.File;
-import java.util.HashMap;
+import java.util.*;
 
 public class SiegeFishing extends JavaPlugin {
 	public static Server server = null;
@@ -97,32 +103,48 @@ public class SiegeFishing extends JavaPlugin {
 
 				ProjectileHandler.projectileUpdater();
 
+				if (referenceChunk != null) {
 
-				for (Player p : Bukkit.getOnlinePlayers()) {
+					for (Player p : Bukkit.getOnlinePlayers()) {
+						if (p.getVehicle() instanceof Boat) {
+							p.sendMessage(p.getPassengers().toString());
+							if (p.getPassengers().isEmpty()) {
 
-					p.sendMessage((p.getLocation().getChunk().getX() - referenceChunk.getX()) + "  " + (p.getLocation().getChunk().getX() - referenceChunk.getZ()));
+								ArmorStand aS = (ArmorStand) PositionHandler.generateArmorStandStack(p, p.getUniqueId(),2);
+
+								ItemStack boatItem = new ItemStack(Material.COOKIE);
+								ItemMeta iM = boatItem.getItemMeta();
+								iM.setCustomModelData(2);
+								boatItem.setItemMeta(iM);
+								aS.getEquipment().setHelmet(boatItem);
 
 
-					PlayerData pD = PlayerHandler.getPlayerData(p);
-					RayTraceResult rTR = p.rayTraceBlocks( 50, FluidCollisionMode.NEVER);
-					/*if (rTR != null) {
-						ParticleHandler.spawnParticle(rTR.getHitPosition().toLocation(p.getWorld()), ParticleData.particleDataMapper.get("default_laser"));
-					}*/
-
-					if (pD.lastLocation != null) {
-						if (pD.lastLocation.getWorld() == pD.p.getWorld()) {
-							pD.velocity = pD.p.getLocation().toVector().subtract(pD.lastLocation.toVector());
-							pD.velocity.setY(pD.p.getVelocity().getY());
+							} else {
+								PositionHandler.rotateArmorStandStack(p, p.getVehicle().getLocation().getYaw(), (float) 0);
+							}
 						} else {
-							pD.velocity = new Vector(0, 0, 0);
+							PositionHandler.deleteArmorStandStack(p);
+							continue;
 						}
-					} else {
-						pD.velocity = new Vector(0, 0, 0);
 					}
-					pD.lastLocation = p.getLocation();
+
+
+
+
+					for (Entity e : referenceChunk.getWorld().getEntities()) {
+						if (!(e instanceof Boat)) {
+							continue;
+						}
+						for (Entity passenger : e.getPassengers()) {
+							//if (passenger instanceof ArmorStand) {
+							//	passenger.setRotation(e.getLocation().getYaw(), 0);
+							//}
+						}
+					}
+
 				}
 			}
-		}.runTaskTimer(SiegeFishing.pluginInstance, 0, 1));
+		}.runTaskTimer(SiegeFishing.pluginInstance, 0, 0));
 	}
 
 }
