@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.io.File;
 import java.util.*;
 
 public class ModIO extends FileIO {
@@ -16,7 +17,7 @@ public class ModIO extends FileIO {
     public ModIO() {}
 
     @Override
-    public FileData loadData(FileConfiguration fC, String fN, FileType fT, String identifier) {
+    public FileData loadData(FileConfiguration fC, String fN, FileType fT, String identifier, File folder) {
         ModData mD = new ModData(identifier, fN);
 
         String displayName = "";
@@ -70,7 +71,7 @@ public class ModIO extends FileIO {
     }
 
     @Override
-    public HashMap<String, Object> loadSubData(FileConfiguration fC, String fN, FileType fT, String identifier) {
+    public HashMap<String, Object> loadSubData(FileConfiguration fC, String fN, FileType fT, String identifier, File folder) {
         return null;
     }
 

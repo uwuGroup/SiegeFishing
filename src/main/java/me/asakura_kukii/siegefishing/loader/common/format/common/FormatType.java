@@ -33,7 +33,9 @@ public enum FormatType {
     LIST_SOUND(new ListSound()),
     MAP_MATERIAL_MATERIAL(new MapMaterialDouble()),
     MAP_MATERIAL_DOUBLE(new MapMaterialDouble()),
-    MAP_STRING_COLORED_STRING(new MapStringColoredString());
+    MAP_STRING_COLORED_STRING(new MapStringColoredString()),
+    CHUNK(new Chunk()),
+    IMAGE(new Image());
     public Format f;
 
     FormatType(Format f) {

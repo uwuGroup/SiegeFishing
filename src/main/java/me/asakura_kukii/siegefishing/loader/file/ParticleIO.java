@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.io.File;
 import java.util.HashMap;
 
 public class ParticleIO extends FileIO {
@@ -16,7 +17,7 @@ public class ParticleIO extends FileIO {
     public ParticleIO() {}
 
     @Override
-    public FileData loadData(FileConfiguration fC, String fN, FileType fT, String identifier) {
+    public FileData loadData(FileConfiguration fC, String fN, FileType fT, String identifier, File folder) {
         ParticleData pD = new ParticleData(identifier, fN);
 
         Particle particle = Particle.ASH;
@@ -52,7 +53,7 @@ public class ParticleIO extends FileIO {
     }
 
     @Override
-    public HashMap<String, Object> loadSubData(FileConfiguration fC, String fN, FileType fT, String identifier) {
+    public HashMap<String, Object> loadSubData(FileConfiguration fC, String fN, FileType fT, String identifier, File folder) {
         return null;
     }
 

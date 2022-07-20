@@ -6,6 +6,7 @@ import me.asakura_kukii.siegefishing.loader.common.format.common.Format;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class MapMaterialMaterial extends Format {
     public MapMaterialMaterial() {}
 
     @Override
-    public Object check(ConfigurationSection cS, java.lang.String fileName, java.lang.String path, java.lang.String root, Object obj) {
+    public Object check(ConfigurationSection cS, java.lang.String fileName, java.lang.String path, java.lang.String root, Object obj, File folder) {
         List<java.lang.String> sL = cS.getStringList(path);
 
         HashMap<Material, Material> mMM = new HashMap<>();

@@ -14,6 +14,7 @@ import me.asakura_kukii.siegefishing.handler.item.gun.GunData;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -83,13 +84,13 @@ public class GunIO extends FileIO {
     }
 
     @Override
-    public FileData loadData(FileConfiguration fC, String fN, FileType fT, String identifier) {
+    public FileData loadData(FileConfiguration fC, String fN, FileType fT, String identifier, File folder) {
 
         GunData gD = new GunData(identifier, fN);
 
         for (GunIO.Map m : GunIO.Map.values()) {
             try {
-                m.f.set(gD, Format.get(fC, fN, m.path, m.o, m.fT, m.nE));
+                m.f.set(gD, Format.get(fC, fN, m.path, m.o, m.fT, m.nE, folder));
             } catch (Exception ignored) {
             }
         }
@@ -100,7 +101,7 @@ public class GunIO extends FileIO {
     }
 
     @Override
-    public HashMap<String, Object> loadSubData(FileConfiguration fC, String fN, FileType fT, String identifier) {
+    public HashMap<String, Object> loadSubData(FileConfiguration fC, String fN, FileType fT, String identifier, File folder) {
         return null;
     }
 

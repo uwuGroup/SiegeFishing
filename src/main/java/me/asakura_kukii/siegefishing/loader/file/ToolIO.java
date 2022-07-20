@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.io.File;
 import java.util.*;
 
 public class ToolIO extends FileIO{
@@ -16,7 +17,7 @@ public class ToolIO extends FileIO{
     public ToolIO() {};
 
     @Override
-    public FileData loadData(FileConfiguration fC, String fN, FileType fT, String identifier) {
+    public FileData loadData(FileConfiguration fC, String fN, FileType fT, String identifier, File folder) {
         ToolData tD = new ToolData(identifier, fN);
 
         String displayName = "";
@@ -37,7 +38,7 @@ public class ToolIO extends FileIO{
     }
 
     @Override
-    public HashMap<String, Object> loadSubData(FileConfiguration fC, String fN, FileType fT, String identifier) {
+    public HashMap<String, Object> loadSubData(FileConfiguration fC, String fN, FileType fT, String identifier, File folder) {
         return null;
     }
 

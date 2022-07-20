@@ -8,6 +8,7 @@ import me.asakura_kukii.siegefishing.loader.common.FormatHandler;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.io.File;
 import java.util.HashMap;
 
 public class SoundIO extends FileIO{
@@ -15,7 +16,7 @@ public class SoundIO extends FileIO{
     public SoundIO() {}
 
     @Override
-    public FileData loadData(FileConfiguration fC, String fN, FileType fT, String identifier) {
+    public FileData loadData(FileConfiguration fC, String fN, FileType fT, String identifier, File folder) {
         SoundData sD = new SoundData(identifier, fN);
 
         String sound = "";
@@ -35,7 +36,7 @@ public class SoundIO extends FileIO{
     }
 
     @Override
-    public HashMap<String, Object> loadSubData(FileConfiguration fC, String fN, FileType fT, String identifier) {
+    public HashMap<String, Object> loadSubData(FileConfiguration fC, String fN, FileType fT, String identifier, File folder) {
         return null;
     }
 

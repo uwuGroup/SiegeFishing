@@ -55,6 +55,8 @@ public class SiegeFishing extends JavaPlugin {
 	public static String potentialVisionGenerate = "";
 	public static String potentialVisionUpdate = "";
 
+	public static Chunk referenceChunk;
+
 
 	public static void SiegeWeaponEventRegister(Plugin p) {
 		Bukkit.getPluginManager().registerEvents(new SiegeWeaponListener(), p);
@@ -97,6 +99,10 @@ public class SiegeFishing extends JavaPlugin {
 
 
 				for (Player p : Bukkit.getOnlinePlayers()) {
+
+					p.sendMessage((p.getLocation().getChunk().getX() - referenceChunk.getX()) + "  " + (p.getLocation().getChunk().getX() - referenceChunk.getZ()));
+
+
 					PlayerData pD = PlayerHandler.getPlayerData(p);
 					RayTraceResult rTR = p.rayTraceBlocks( 50, FluidCollisionMode.NEVER);
 					/*if (rTR != null) {

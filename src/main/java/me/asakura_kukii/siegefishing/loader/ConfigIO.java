@@ -7,11 +7,15 @@ import me.asakura_kukii.siegefishing.loader.common.format.common.Format;
 import me.asakura_kukii.siegefishing.loader.common.format.common.FormatType;
 import me.asakura_kukii.siegefishing.utility.colorcode.ColorCode;
 import me.asakura_kukii.siegefishing.main.Main;
+import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.*;
+
+import static me.asakura_kukii.siegefishing.SiegeFishing.SiegeWeaponEventRegister;
+import static me.asakura_kukii.siegefishing.SiegeFishing.pluginFolder;
 
 public class ConfigIO {
 
@@ -56,6 +60,7 @@ public class ConfigIO {
             String potentialVisionNormal = "";
             String potentialVisionGenerate = "";
             String potentialVisionUpdate = "";
+            Chunk referenceChunk = null;
             //reading...
             blockCheckSpacing = (Double) FormatHandler.checkConfigurationFormat(fC, fN, "blockCheckSpacing", blockCheckSpacing, true);
             trailSpacing = (Double) FormatHandler.checkConfigurationFormat(fC, fN, "trailSpacing", trailSpacing, true);
@@ -71,12 +76,13 @@ public class ConfigIO {
             replaceableBlockMap = FormatHandler.replaceableBlockMapCreator(fC, fN, "replaceableBlockMap", FormatHandler.castList(FormatHandler.checkConfigurationFormat(fC, fN, "replaceableBlockMap", replaceableBlockList, false), String.class));
             penetrableBlockMap = FormatHandler.breakableBlockMapCreator(fC, fN, "penetrableBlockMap", FormatHandler.castList(FormatHandler.checkConfigurationFormat(fC, fN, "penetrableBlockMap", penetrableBlockList, false), String.class));
 
-            potentialNormal = (String) Format.get(fC, fN, "potentialNormal", potentialNormal, FormatType.COLORED_STRING, true);
-            potentialGenerate = (String) Format.get(fC, fN, "potentialGenerate", potentialGenerate, FormatType.COLORED_STRING, true);
-            potentialUpdate = (String) Format.get(fC, fN, "potentialUpdate", potentialUpdate, FormatType.COLORED_STRING, true);
-            potentialVisionNormal = (String) Format.get(fC, fN, "potentialVisionNormal", potentialVisionNormal, FormatType.COLORED_STRING, true);
-            potentialVisionGenerate = (String) Format.get(fC, fN, "potentialVisionGenerate", potentialVisionGenerate, FormatType.COLORED_STRING, true);
-            potentialVisionUpdate = (String) Format.get(fC, fN, "potentialVisionUpdate", potentialVisionUpdate, FormatType.COLORED_STRING, true);
+            potentialNormal = (String) Format.get(fC, fN, "potentialNormal", potentialNormal, FormatType.COLORED_STRING, true, pluginFolder);
+            potentialGenerate = (String) Format.get(fC, fN, "potentialGenerate", potentialGenerate, FormatType.COLORED_STRING, true, pluginFolder);
+            potentialUpdate = (String) Format.get(fC, fN, "potentialUpdate", potentialUpdate, FormatType.COLORED_STRING, true, pluginFolder);
+            potentialVisionNormal = (String) Format.get(fC, fN, "potentialVisionNormal", potentialVisionNormal, FormatType.COLORED_STRING, true, pluginFolder);
+            potentialVisionGenerate = (String) Format.get(fC, fN, "potentialVisionGenerate", potentialVisionGenerate, FormatType.COLORED_STRING, true, pluginFolder);
+            potentialVisionUpdate = (String) Format.get(fC, fN, "potentialVisionUpdate", potentialVisionUpdate, FormatType.COLORED_STRING, true, pluginFolder);
+            referenceChunk = (Chunk) Format.get(fC, fN, "referenceChunk", null, FormatType.CHUNK, true, pluginFolder);
 
 
 
@@ -101,6 +107,7 @@ public class ConfigIO {
                 SiegeFishing.potentialVisionNormal = potentialVisionNormal;
                 SiegeFishing.potentialVisionGenerate = potentialVisionGenerate;
                 SiegeFishing.potentialVisionUpdate = potentialVisionUpdate;
+                SiegeFishing.referenceChunk = referenceChunk;
 
                 SiegeFishing.server.getConsoleSender().sendMessage(ColorCode.ANSI_GREEN + SiegeFishing.consolePluginPrefix + ColorCode.ANSI_WHITE + "Loaded config [" + identifier + "]");
             } else {

@@ -6,13 +6,14 @@ import me.asakura_kukii.siegefishing.loader.common.FileIO;
 import me.asakura_kukii.siegefishing.loader.common.format.common.Format;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.io.File;
 import java.util.Locale;
 
 public class TypeReload extends Format {
     public TypeReload() {}
 
     @Override
-    public Object check(ConfigurationSection cS, java.lang.String fileName, java.lang.String path, java.lang.String root, Object obj) {
+    public Object check(ConfigurationSection cS, java.lang.String fileName, java.lang.String path, java.lang.String root, Object obj, File folder) {
         java.lang.String s = cS.getString(path);
         return checkTypeReload(s, fileName, path, root, obj);
     }

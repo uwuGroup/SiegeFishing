@@ -9,6 +9,7 @@ import me.asakura_kukii.siegefishing.loader.common.format.common.FormatType;
 import me.asakura_kukii.siegefishing.loader.method.common.MethodIO;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +60,7 @@ public class DamageLineIO extends MethodIO {
 
         for (Map m : Map.values()) {
             try {
-                m.f.set(dLD, Format.get(cS, fN, m.path, m.o, m.fT, m.nE));
+                m.f.set(dLD, Format.get(cS, fN, m.path, m.o, m.fT, m.nE, null));
             } catch (Exception ignored) {
             }
         }

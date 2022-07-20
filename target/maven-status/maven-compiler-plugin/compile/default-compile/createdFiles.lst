@@ -6,6 +6,7 @@ me\asakura_kukii\siegefishing\loader\common\format\ListInteger.class
 me\asakura_kukii\siegefishing\loader\common\format\ListParticle.class
 me\asakura_kukii\siegefishing\handler\nonitem\method\projectile\ProjectileData.class
 me\asakura_kukii\siegefishing\loader\common\FileType.class
+me\asakura_kukii\siegefishing\loader\common\format\Chunk.class
 me\asakura_kukii\siegefishing\loader\common\format\String.class
 me\asakura_kukii\siegefishing\loader\file\ToolIO.class
 me\asakura_kukii\siegefishing\handler\nonitem\block\BlockHandler.class
@@ -34,6 +35,7 @@ me\asakura_kukii\siegefishing\loader\common\format\Sound.class
 me\asakura_kukii\siegefishing\loader\file\ModIO.class
 me\asakura_kukii\siegefishing\loader\file\UnicodeIO.class
 me\asakura_kukii\siegefishing\handler\item\gun\fire\FiringHandler.class
+me\asakura_kukii\siegefishing\handler\nonitem\chunk\ChunkData.class
 me\asakura_kukii\siegefishing\loader\file\LureIO$Map.class
 me\asakura_kukii\siegefishing\handler\item\rod\RodData.class
 me\asakura_kukii\siegefishing\handler\item\gun\fire\FullAutoHandler$1.class
@@ -60,7 +62,9 @@ me\asakura_kukii\siegefishing\loader\common\format\ListString.class
 me\asakura_kukii\siegefishing\handler\item\hand\HandData.class
 me\asakura_kukii\siegefishing\utility\nms\ProtocolLibHandler.class
 me\asakura_kukii\siegefishing\utility\coodinate\PositionHandler.class
+me\asakura_kukii\siegefishing\loader\common\format\Image.class
 me\asakura_kukii\siegefishing\loader\file\ParticleIO.class
+me\asakura_kukii\siegefishing\handler\nonitem\chunk\ChunkHandler.class
 me\asakura_kukii\siegefishing\handler\item\gun\fire\FiringHandler$2.class
 me\asakura_kukii\siegefishing\loader\common\format\Boolean.class
 me\asakura_kukii\siegefishing\handler\nonitem\sound\SoundHandler.class
@@ -76,6 +80,7 @@ me\asakura_kukii\siegefishing\handler\item\fish\FishData.class
 me\asakura_kukii\siegefishing\handler\item\gun\GunHandler.class
 me\asakura_kukii\siegefishing\loader\common\format\ListSound.class
 me\asakura_kukii\siegefishing\loader\method\CircularParticleIO.class
+me\asakura_kukii\siegefishing\utility\coodinate\Image2D.class
 me\asakura_kukii\siegefishing\utility\format\UnicodeHandler.class
 me\asakura_kukii\siegefishing\utility\nms\NMSHandler.class
 me\asakura_kukii\siegefishing\loader\common\format\Hand.class

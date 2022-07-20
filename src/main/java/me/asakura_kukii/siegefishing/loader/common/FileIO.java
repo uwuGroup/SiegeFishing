@@ -25,7 +25,7 @@ public abstract class FileIO {
                     if (f.getName().contains("yml")) {
                         FileConfiguration fC = YamlConfiguration.loadConfiguration(f);
                         fileStatusMapper.put(fT.folder.getName() + "." + f.getName(), true);
-                        loadFile(fC, fT.folder.getName() + "." + f.getName(), fT);
+                        loadFile(fC, fT.folder.getName() + "." + f.getName(), fT, fT.folder);
                     }
                 }
             } else {
@@ -34,7 +34,7 @@ public abstract class FileIO {
         }
     }
 
-    public static void loadFile(FileConfiguration fC, String fN, FileType fT) {
+    public static void loadFile(FileConfiguration fC, String fN, FileType fT, File folder) {
         fileMessageMapper.put(fN, "");
 
         String identifier = "";
@@ -49,8 +49,8 @@ public abstract class FileIO {
             fileMessageMapper.put(fN, fileMessageMapper.get(fN) + SiegeFishing.consolePluginPrefix + "Loading file [" + fN + "]\n");
 
             //goto specific loader
-            FileData fD = fT.fIO.loadData(fC, fN, fT, identifier);
-            HashMap<String, Object> subMap = fT.fIO.loadSubData(fC, fN, fT, identifier);
+            FileData fD = fT.fIO.loadData(fC, fN, fT, identifier, folder);
+            HashMap<String, Object> subMap = fT.fIO.loadSubData(fC, fN, fT, identifier, folder);
             if (fD != null) {
                 fD.fT = fT;
             }
@@ -71,9 +71,9 @@ public abstract class FileIO {
             }
         }
     }
-    public abstract FileData loadData(FileConfiguration fC, String fN, FileType fT, String identifier);
+    public abstract FileData loadData(FileConfiguration fC, String fN, FileType fT, String identifier, File folder);
 
-    public abstract HashMap<String, Object> loadSubData(FileConfiguration fC, String fN, FileType fT, String identifier);
+    public abstract HashMap<String, Object> loadSubData(FileConfiguration fC, String fN, FileType fT, String identifier, File folder);
 
     public abstract void loadDefault(FileType fT);
 }

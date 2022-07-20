@@ -4,10 +4,12 @@ import me.asakura_kukii.siegefishing.SiegeFishing;
 import me.asakura_kukii.siegefishing.loader.common.FileIO;
 import org.bukkit.configuration.ConfigurationSection;
 
-public abstract class Format {
-    public abstract Object check(ConfigurationSection cS, String fileName, String path, String root, Object obj);
+import java.io.File;
 
-    public static Object get(ConfigurationSection cS, String fileName, String path, Object obj, FormatType fT, boolean notEmpty) {
+public abstract class Format {
+    public abstract Object check(ConfigurationSection cS, String fileName, String path, String root, Object obj, File folder);
+
+    public static Object get(ConfigurationSection cS, String fileName, String path, Object obj, FormatType fT, boolean notEmpty, File folder) {
         String root = cS.getCurrentPath() + ".";
         if (root.matches(".")) {
             root = "";
@@ -25,7 +27,7 @@ public abstract class Format {
                 }
                 return obj;
             } else {
-                return fT.f.check(cS, fileName, path, root, obj);
+                return fT.f.check(cS, fileName, path, root, obj, folder);
             }
         } else {
             if (notEmpty) {

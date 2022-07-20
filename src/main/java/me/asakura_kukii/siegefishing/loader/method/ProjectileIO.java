@@ -10,6 +10,7 @@ import me.asakura_kukii.siegefishing.loader.method.common.MethodIO;
 import me.asakura_kukii.siegefishing.utility.coodinate.Vector3D;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +73,7 @@ public class ProjectileIO extends MethodIO {
 
         for (Map m : Map.values()) {
             try {
-                m.f.set(pD, Format.get(cS, fN, m.path, m.o, m.fT, m.nE));
+                m.f.set(pD, Format.get(cS, fN, m.path, m.o, m.fT, m.nE, null));
             } catch (Exception ignored) {
             }
         }

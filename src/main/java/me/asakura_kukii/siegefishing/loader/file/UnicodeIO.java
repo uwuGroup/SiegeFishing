@@ -10,6 +10,7 @@ import me.asakura_kukii.siegefishing.loader.common.format.common.FormatType;
 import me.asakura_kukii.siegefishing.utility.colorcode.ColorCode;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 
@@ -37,18 +38,18 @@ public class UnicodeIO extends FileIO {
     }
 
     @Override
-    public FileData loadData(FileConfiguration fC, String fN, FileType fT, String identifier) {
+    public FileData loadData(FileConfiguration fC, String fN, FileType fT, String identifier, File folder) {
         return new CommonFileData(identifier, fN);
     }
 
     @Override
-    public HashMap<String, Object> loadSubData(FileConfiguration fC, String fN, FileType fT, String identifier) {
+    public HashMap<String, Object> loadSubData(FileConfiguration fC, String fN, FileType fT, String identifier, File folder) {
 
         HashMap<String, Object> subMap = new HashMap<>();
 
         for (UnicodeIO.Map m : UnicodeIO.Map.values()) {
             try {
-                HashMap<String, String> tempMap = (HashMap<String, String>) Format.get(fC, fN, m.path, m.o, m.fT, m.nE);
+                HashMap<String, String> tempMap = (HashMap<String, String>) Format.get(fC, fN, m.path, m.o, m.fT, m.nE, folder);
                 for (String key : tempMap.keySet()) {
                     subMap.put(key, tempMap.get(key));
                 }
