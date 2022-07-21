@@ -10,6 +10,8 @@ import me.asakura_kukii.siegefishing.handler.nonitem.potential.PotentialType;
 import me.asakura_kukii.siegefishing.loader.common.FileIO;
 import me.asakura_kukii.siegefishing.loader.common.FileType;
 import me.asakura_kukii.siegefishing.main.Main;
+import me.asakura_kukii.siegefishing.utility.mount.MountHandler;
+import me.asakura_kukii.siegefishing.utility.nms.ProtocolLibHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -61,6 +63,7 @@ public class CommandHandler {
                                     listFile(sender, FileType.SOUND);
                                     return true;
                                 } else if (args[2].equalsIgnoreCase("invalid")) {
+                                    MountHandler.refreshMount((Player) sender);
                                     listInvalid(sender);
                                     return true;
                                 } else {

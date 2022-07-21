@@ -1,23 +1,33 @@
 package me.asakura_kukii.siegefishing.utility.nms;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 
-import com.mojang.datafixers.util.Pair;
+import com.comphenix.protocol.wrappers.EnumWrappers;
+import com.comphenix.protocol.wrappers.Pair;
+import com.comphenix.protocol.wrappers.WrappedDataWatcher;
+import com.comphenix.protocol.wrappers.WrappedWatchableObject;
+import com.google.common.collect.Lists;
 import me.asakura_kukii.siegefishing.SiegeFishing;
 import me.asakura_kukii.siegefishing.handler.item.gun.GunData;
 import me.asakura_kukii.siegefishing.handler.item.hand.HandData;
 import net.minecraft.nbt.CompoundTag;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_18_R2.inventory.CraftItemStack;
+import org.bukkit.entity.Boat;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.comphenix.protocol.*;
 import com.comphenix.protocol.events.*;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class ProtocolLibHandler {
     private static ProtocolManager protocolManager;
+
+    public static HashMap<UUID, Integer> entityIDMap = new HashMap<>();
 
     public static void initProtocolLibHandler() {
         if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
@@ -27,7 +37,6 @@ public class ProtocolLibHandler {
             protocolManager.removePacketListeners(SiegeFishing.pluginInstance);
             initRemoveArmSwing();
             initAimCrossBow();
-
         }
     }
 

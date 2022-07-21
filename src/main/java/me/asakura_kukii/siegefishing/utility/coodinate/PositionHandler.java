@@ -1,6 +1,9 @@
 package me.asakura_kukii.siegefishing.utility.coodinate;
 
 import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.events.PacketContainer;
+import me.asakura_kukii.siegefishing.utility.patch.ModifiedArmorStand;
+import net.minecraft.server.level.ServerLevel;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -16,30 +19,28 @@ import static java.lang.StrictMath.hypot;
 
 public class PositionHandler {
 
+
+
     public static Entity generateArmorStandStack(Player p, UUID uuid, int length) {
-        UUID previous = uuid;
+        if (p.isInWater()) {
+            p.setVelocity(new Vector(0, 1, 0));
+            return null;
+        } else  {
+            UUID previous = uuid;
+            for (int i = 0; i < length; i++) {
+                Entity e = Bukkit.getServer().getEntity(previous);
+                if (e == null) {
+                    break;
+                }
 
-
-
-
-
-
-
-        for (int i = 0; i < length; i++) {
-            Entity e = Bukkit.getServer().getEntity(previous);
-            if (e == null) {
-                break;
+                ArmorStand aS = (ArmorStand) ModifiedArmorStand.SpawnModifiedArmorStand(e.getLocation());
+                aS.setMarker(true);
+                e.addPassenger(aS);
+                p.sendMessage("added one to" + e.getName() + e.getPassengers());
+                previous = aS.getUniqueId();
             }
-            ArmorStand aS = (ArmorStand) e.getWorld().spawnEntity(e.getLocation(), EntityType.ARMOR_STAND);
-            aS.setInvisible(true);
-            aS.setMarker(true);
-            aS.setInvulnerable(true);
-            aS.addScoreboardTag("armor_stand_node");
-            e.addPassenger(aS);
-            p.sendMessage("added one to" + e.getName() + e.getPassengers());
-            previous = aS.getUniqueId();
+            return Bukkit.getServer().getEntity(previous);
         }
-        return Bukkit.getServer().getEntity(previous);
     }
 
     public static void rotateArmorStandStack(Entity e, Float yaw, Float pitch) {

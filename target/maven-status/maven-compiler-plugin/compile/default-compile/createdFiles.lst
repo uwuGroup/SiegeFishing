@@ -11,6 +11,7 @@ me\asakura_kukii\siegefishing\loader\common\format\String.class
 me\asakura_kukii\siegefishing\loader\file\ToolIO.class
 me\asakura_kukii\siegefishing\handler\nonitem\block\BlockHandler.class
 me\asakura_kukii\siegefishing\handler\nonitem\player\PlayerData.class
+me\asakura_kukii\siegefishing\utility\patch\ModifiedArmorStand.class
 me\asakura_kukii\siegefishing\handler\item\tool\ToolHandler.class
 me\asakura_kukii\siegefishing\handler\nonitem\sound\SoundData.class
 me\asakura_kukii\siegefishing\loader\common\format\TypeMethod.class
@@ -22,6 +23,7 @@ me\asakura_kukii\siegefishing\handler\nonitem\method\projectile\ProjectileHandle
 me\asakura_kukii\siegefishing\handler\item\gun\fire\FiringHandler$1.class
 me\asakura_kukii\siegefishing\loader\common\format\MapMaterialDouble.class
 me\asakura_kukii\siegefishing\loader\common\format\ListFloat.class
+me\asakura_kukii\siegefishing\utility\mount\MountHandler.class
 me\asakura_kukii\siegefishing\loader\common\format\ListColoredString.class
 me\asakura_kukii\siegefishing\loader\method\ProjectileIO.class
 me\asakura_kukii\siegefishing\handler\nonitem\method\damageline\DamageLineHandler.class

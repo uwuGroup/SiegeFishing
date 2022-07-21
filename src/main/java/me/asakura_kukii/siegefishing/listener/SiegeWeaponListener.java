@@ -15,6 +15,7 @@ import me.asakura_kukii.siegefishing.handler.nonitem.player.InputHandler;
 import me.asakura_kukii.siegefishing.handler.nonitem.player.PlayerHandler;
 import me.asakura_kukii.siegefishing.handler.nonitem.player.StateHandler;
 import me.asakura_kukii.siegefishing.handler.item.gun.reload.Reload;
+import me.asakura_kukii.siegefishing.utility.mount.MountHandler;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -63,6 +64,8 @@ public class SiegeWeaponListener implements org.bukkit.event.Listener {
         //Checking PlayerData
         PlayerData pD = PlayerHandler.getPlayerData(p);
 
+        MountHandler.refreshMount(p);
+
         if (FullAutoHandler.checkFullAutoFiring(pD)) {
             FullAutoHandler.breakUpdateFullAutoFiring(pD);
         }
@@ -85,6 +88,8 @@ public class SiegeWeaponListener implements org.bukkit.event.Listener {
     public void onDeath(PlayerDeathEvent e) {
         Player p = e.getEntity();
         PlayerData pD = PlayerHandler.getPlayerData(p);
+
+        MountHandler.refreshMount(p);
 
         if (FullAutoHandler.checkFullAutoFiring(pD)) {
             FullAutoHandler.breakUpdateFullAutoFiring(pD);

@@ -1,7 +1,12 @@
 package me.asakura_kukii.siegefishing;
 
 import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLib;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.wrappers.WrappedWatchableObject;
+import com.google.common.collect.Lists;
 import me.asakura_kukii.siegefishing.handler.nonitem.method.projectile.ProjectileHandler;
 import me.asakura_kukii.siegefishing.handler.nonitem.player.PlayerData;
 import me.asakura_kukii.siegefishing.handler.nonitem.player.InputHandler;
@@ -9,6 +14,7 @@ import me.asakura_kukii.siegefishing.handler.nonitem.player.PlayerHandler;
 import me.asakura_kukii.siegefishing.handler.nonitem.block.BlockHandler;
 import me.asakura_kukii.siegefishing.loader.common.FileIO;
 import me.asakura_kukii.siegefishing.utility.coodinate.PositionHandler;
+import me.asakura_kukii.siegefishing.utility.mount.MountHandler;
 import me.asakura_kukii.siegefishing.utility.nms.ProtocolLibHandler;
 import me.asakura_kukii.siegefishing.listener.*;
 import me.asakura_kukii.siegefishing.loader.*;
@@ -27,6 +33,7 @@ import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class SiegeFishing extends JavaPlugin {
@@ -98,19 +105,47 @@ public class SiegeFishing extends JavaPlugin {
 			updaterRegister.remove(pluginInstance);
 		}
 		updaterRegister.put(pluginInstance, new BukkitRunnable() {
+
+			HashMap<UUID, Integer> entityIDMapper = new HashMap<>();
 			@Override
 			public void run() {
 
 				ProjectileHandler.projectileUpdater();
 
+
 				if (referenceChunk != null) {
 
 					for (Player p : Bukkit.getOnlinePlayers()) {
+
+						MountHandler.orientMount(p);
+						/*
 						if (p.getVehicle() instanceof Boat) {
-							p.sendMessage(p.getPassengers().toString());
+							ProtocolManager pm = ProtocolLibrary.getProtocolManager();
+							PacketContainer packet = new PacketContainer(PacketType.Play.Server.SPAWN_ENTITY_LIVING);
+							int eID1 = (int) ((Math.random() * 0.5 + 0.5) * Integer.MAX_VALUE);
+							packet.getIntegers().write(0, (int) eID1).write(1, 1);
+							packet.getDoubles().write(0, p.getLocation().getX()).write(1, p.getLocation().getY()).write(2, p.getLocation().getZ());
+
+							PacketContainer ridePacket = new PacketContainer(PacketType.Play.Server.MOUNT);
+							ridePacket.getIntegers().write(0, p.getEntityId());
+							ridePacket.getIntegerArrays().write(0, new int[]{eID1});
+
+							PacketContainer metadataPacket = new PacketContainer(PacketType.Play.Server.ENTITY_METADATA);
+							metadataPacket.getIntegers().write(0, eID1);
+							try {
+								pm.sendServerPacket(p, packet, false);
+								pm.sendServerPacket(p, ridePacket, false);
+								p.sendMessage(eID1 + "");
+							} catch (InvocationTargetException e) {
+								e.printStackTrace();
+							}
+						}
 							if (p.getPassengers().isEmpty()) {
 
-								ArmorStand aS = (ArmorStand) PositionHandler.generateArmorStandStack(p, p.getUniqueId(),2);
+
+
+
+								ArmorStand aS = (ArmorStand) PositionHandler.generateArmorStandStack(p, p.getUniqueId(),1);
 
 								ItemStack boatItem = new ItemStack(Material.COOKIE);
 								ItemMeta iM = boatItem.getItemMeta();
@@ -125,7 +160,7 @@ public class SiegeFishing extends JavaPlugin {
 						} else {
 							PositionHandler.deleteArmorStandStack(p);
 							continue;
-						}
+						}*/
 					}
 
 
