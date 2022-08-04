@@ -5,6 +5,7 @@ import me.asakura_kukii.siegefishing.data.basic.ConfigData;
 import me.asakura_kukii.siegefishing.data.basic.ImageMapData;
 import me.asakura_kukii.siegefishing.data.basic.ImageValueData;
 import me.asakura_kukii.siegefishing.data.common.FileData;
+import me.asakura_kukii.siegefishing.handler.fishing.render.RodRender;
 import me.asakura_kukii.siegefishing.io.loader.common.FileType;
 import me.asakura_kukii.siegefishing.io.loader.common.Loader;
 import me.asakura_kukii.siegefishing.io.util.FileUtil;
@@ -48,6 +49,7 @@ public class SiegeFishing{
 
 		InputHandler.keyMapper();
 		updater();
+		RodRender.startLoop();
 	}
 
 	public static void onDisable() {
