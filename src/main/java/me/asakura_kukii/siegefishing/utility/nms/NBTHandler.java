@@ -8,16 +8,18 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Objects;
 
+import static me.asakura_kukii.siegefishing.SiegeFishing.pluginName;
+
 public class NBTHandler {
-    public static boolean hasSiegeWeaponCompoundTag(ItemStack iS) {
-        if (iS != null && SiegeFishing.pluginName != null && iS.getItemMeta() != null && iS.getItemMeta().hasCustomModelData()) {
+    public static boolean hasPluginCompoundTag(ItemStack iS) {
+        if (iS != null && pluginName != null && iS.getItemMeta() != null && iS.getItemMeta().hasCustomModelData()) {
             ItemStack clonedIS = iS.clone();
             net.minecraft.world.item.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(clonedIS);
             if(nmsItemStack.hasTag()) {
                 CompoundTag NBTCompound = nmsItemStack.getTag();
                 assert NBTCompound != null;
-                if(NBTCompound.contains(SiegeFishing.pluginName)) {
-                    CompoundTag cT = (CompoundTag) NBTCompound.get(SiegeFishing.pluginName);
+                if(NBTCompound.contains(pluginName)) {
+                    CompoundTag cT = (CompoundTag) NBTCompound.get(pluginName);
                     assert cT != null;
                     return true;
                 }
@@ -27,15 +29,15 @@ public class NBTHandler {
     }
 
     public static Boolean contains(ItemStack iS, String s) {
-        if (iS != null && SiegeFishing.pluginName != null) {
+        if (iS != null && pluginName != null) {
             ItemStack clonedIS = iS.clone();
             net.minecraft.world.item.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(clonedIS);
             if(nmsItemStack.hasTag()) {
                 CompoundTag NBTCompound = nmsItemStack.getTag();
 
                 assert NBTCompound != null;
-                if(NBTCompound.contains(SiegeFishing.pluginName)) {
-                    CompoundTag cT = (CompoundTag) NBTCompound.get(SiegeFishing.pluginName);
+                if(NBTCompound.contains(pluginName)) {
+                    CompoundTag cT = (CompoundTag) NBTCompound.get(pluginName);
                     assert cT != null;
                     return cT.contains(s);
                 }
@@ -45,21 +47,21 @@ public class NBTHandler {
     }
 
     public static ItemStack remove(ItemStack iS, String s) {
-        if (iS != null && SiegeFishing.pluginName != null) {
+        if (iS != null && pluginName != null) {
             ItemStack clonedIS = iS.clone();
             net.minecraft.world.item.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(clonedIS);
             if(nmsItemStack.hasTag()) {
                 CompoundTag NBTCompound = nmsItemStack.getTag();
 
                 assert NBTCompound != null;
-                if(NBTCompound.contains(SiegeFishing.pluginName)) {
-                    CompoundTag cT = (CompoundTag) NBTCompound.get(SiegeFishing.pluginName);
+                if(NBTCompound.contains(pluginName)) {
+                    CompoundTag cT = (CompoundTag) NBTCompound.get(pluginName);
                     assert cT != null;
                     if (cT.contains(s)) {
                         cT.remove(s);
                     }
-                    NBTCompound.remove(SiegeFishing.pluginName);
-                    NBTCompound.put(SiegeFishing.pluginName, cT);
+                    NBTCompound.remove(pluginName);
+                    NBTCompound.put(pluginName, cT);
                 }
                 nmsItemStack.setTag(NBTCompound);
                 return CraftItemStack.asBukkitCopy(nmsItemStack);
@@ -105,15 +107,15 @@ public class NBTHandler {
     }
 
     public static Object get(ItemStack iS, String s, Class<?> c) {
-        if (iS != null && SiegeFishing.pluginName != null) {
+        if (iS != null && pluginName != null) {
             ItemStack clonedIS = iS.clone();
             net.minecraft.world.item.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(clonedIS);
             if(nmsItemStack.hasTag()) {
                 CompoundTag NBTCompound = nmsItemStack.getTag();
 
                 assert NBTCompound != null;
-                if(NBTCompound.contains(SiegeFishing.pluginName)) {
-                    CompoundTag cT = (CompoundTag) NBTCompound.get(SiegeFishing.pluginName);
+                if(NBTCompound.contains(pluginName)) {
+                    CompoundTag cT = (CompoundTag) NBTCompound.get(pluginName);
                     assert cT != null;
                     return get(cT, s, c);
                 }
@@ -166,22 +168,22 @@ public class NBTHandler {
     }
 
     public static ItemStack set(ItemStack iS, String s, Object o, Boolean b) {
-        if (iS != null && SiegeFishing.pluginName != null) {
+        if (iS != null && pluginName != null) {
             ItemStack clonedIS = iS.clone();
             net.minecraft.world.item.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(clonedIS);
             CompoundTag NBTCompound = (nmsItemStack.hasTag()) ? nmsItemStack.getTag() : new CompoundTag();
             CompoundTag cT;
             assert NBTCompound != null;
-            if(!NBTCompound.contains(SiegeFishing.pluginName)) {
+            if(!NBTCompound.contains(pluginName)) {
                 cT = new CompoundTag();
                 cT = set(cT, s, o, b);
-                NBTCompound.put(SiegeFishing.pluginName, cT);
+                NBTCompound.put(pluginName, cT);
             } else {
-                cT = (CompoundTag) NBTCompound.get(SiegeFishing.pluginName);
+                cT = (CompoundTag) NBTCompound.get(pluginName);
                 assert cT != null;
                 cT = set(cT, s, o, b);
-                NBTCompound.remove(SiegeFishing.pluginName);
-                NBTCompound.put(SiegeFishing.pluginName, cT);
+                NBTCompound.remove(pluginName);
+                NBTCompound.put(pluginName, cT);
             }
             nmsItemStack.setTag(NBTCompound);
             return CraftItemStack.asBukkitCopy(nmsItemStack);

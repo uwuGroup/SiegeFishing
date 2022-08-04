@@ -1,14 +1,6 @@
 package me.asakura_kukii.siegefishing.handler.nonitem.player;
 
 import me.asakura_kukii.siegefishing.SiegeFishing;
-import me.asakura_kukii.siegefishing.handler.item.gun.GunData;
-import me.asakura_kukii.siegefishing.handler.item.hand.HandData;
-import me.asakura_kukii.siegefishing.handler.item.mod.ModData;
-import me.asakura_kukii.siegefishing.handler.item.tool.ToolData;
-import me.asakura_kukii.siegefishing.handler.item.gun.GunHandler;
-import me.asakura_kukii.siegefishing.handler.item.hand.HandHandler;
-import me.asakura_kukii.siegefishing.handler.item.mod.ModHandler;
-import me.asakura_kukii.siegefishing.handler.item.tool.ToolHandler;
 import me.asakura_kukii.siegefishing.utility.nms.NBTHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -64,11 +56,6 @@ public class InputHandler {
         if (Bukkit.getOnlinePlayers().contains(p)) {
             PlayerData pD = PlayerHandler.getPlayerData(p);
             String trigger = "on" + key + state;
-            if (gunKeyMap.containsKey(trigger)) {
-                for (String s: gunKeyMap.get(trigger)) {
-                    StateHandler.mapStateCache(pD, s);
-                }
-            }
 
             int handSlot = -1;
 
@@ -96,55 +83,11 @@ public class InputHandler {
                     continue;
                 }
                 ItemStack clonedIS = iS.clone();
-                if (NBTHandler.hasSiegeWeaponCompoundTag(iS)) {
-                    if (GunData.getData(iS) != null) {
-                        if (gunKeyMap.containsKey(trigger)) {
-                            for (String s: gunKeyMap.get(trigger)) {
-                                if (GunHandler.triggerGun(GunData.getData(iS), clonedIS, slot, pD, s, slotOfHand)) {
-                                    cancel = true;
-                                }
-                            }
-                        }
-                    }
-                    if (ModData.getData(iS) != null) {
-                        if (modKeyMap.containsKey(trigger)) {
-                            for (String s: modKeyMap.get(trigger)) {
-                                if (ModHandler.triggerMod(ModData.getData(iS), clonedIS, slot, pD, s, slotOfHand)) {
-                                    cancel = true;
-                                }
-                            }
-                        }
-                    }
-                    if (ToolData.getData(iS) != null) {
-                        if (toolKeyMap.containsKey(trigger)) {
-                            for (String s: toolKeyMap.get(trigger)) {
-                                if (ToolHandler.triggerTool(ToolData.getData(iS), clonedIS, slot, pD, s, slotOfHand)) {
-                                    cancel = true;
-                                }
-                            }
-                        }
-                    }
-                    if (HandData.getData(iS) != null) {
-                        handSlot = slot;
-                    }
+                if (NBTHandler.hasPluginCompoundTag(iS)) {
+                    p.sendMessage(trigger + iS.getItemMeta().getDisplayName());
                 }
             }
             //2nd round, update hand if there is any
-            if (handSlot != -1) {
-                if (handKeyMap.containsKey(trigger)) {
-                    for (String s : handKeyMap.get(trigger)) {
-                        if (HandHandler.triggerHand(HandData.getData(p.getInventory().getItem(handSlot)), Objects.requireNonNull(p.getInventory().getItem(handSlot)).clone(), handSlot, pD, s, slotOfHand)) {
-                            cancel = true;
-                        }
-                    }
-                }
-            }
-
-            if (handKeyMap.containsKey(trigger)) {
-                for (String s : handKeyMap.get(trigger)) {
-                    HandHandler.triggerGenerateAndDestroyHand(pD, s, slotOfHand);
-                }
-            }
             if (checkHold) {
                 keyHoldChecker(key, p, checkOff, slotOfHand);
                 PlayerHandler.playerDataMapper.get(p.getUniqueId()).keyHoldRegister.remove(key);

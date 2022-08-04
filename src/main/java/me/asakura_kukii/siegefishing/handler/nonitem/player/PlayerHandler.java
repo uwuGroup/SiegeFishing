@@ -1,6 +1,5 @@
 package me.asakura_kukii.siegefishing.handler.nonitem.player;
 
-import me.asakura_kukii.siegefishing.loader.PlayerIO;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -38,7 +37,7 @@ public class PlayerHandler {
 
     public static PlayerData getPlayerData(Player p) {
         if (!PlayerHandler.playerDataMapper.containsKey(p.getUniqueId())) {
-            PlayerIO.Load(p);
+            PlayerDataCreator(p);
         }
         return PlayerHandler.playerDataMapper.get(p.getUniqueId());
     }

@@ -4,7 +4,7 @@ api-version: 1.18
 name: SiegeFishing
 commands:
   SiegeFishing:
-    description: Main command for SiegeFishing
+    description: Main argument for SiegeFishing
     aliases: [sf]
 permissions:
   siegefishing.admin:
