@@ -4,5 +4,6 @@ import org.bukkit.Location;
 
 public interface HookTracker {
     Location getRodLocation();
-    RodRenderParam getRenderParam();
+
+    void updateTracerLocation(Location nextLocation);
 }

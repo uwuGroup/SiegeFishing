@@ -1,19 +1,17 @@
 package me.asakura_kukii.siegefishing;
 
+import me.asakura_kukii.siegefishing.config.data.FileData;
+import me.asakura_kukii.siegefishing.config.data.FileType;
 import me.asakura_kukii.siegefishing.config.data.addon.FishSessionData;
 import me.asakura_kukii.siegefishing.config.data.basic.ConfigData;
-import me.asakura_kukii.siegefishing.config.data.FileData;
-import me.asakura_kukii.siegefishing.handler.fishing.render.RodRender;
-import me.asakura_kukii.siegefishing.config.data.FileType;
 import me.asakura_kukii.siegefishing.config.io.FileIO;
+import me.asakura_kukii.siegefishing.handler.inventory.SiegeInventoryListener;
+import me.asakura_kukii.siegefishing.handler.nonitem.player.InputHandler;
 import me.asakura_kukii.siegefishing.handler.nonitem.player.SiegePlayerListener;
 import me.asakura_kukii.siegefishing.handler.region.SiegeRegionListener;
 import me.asakura_kukii.siegefishing.utility.file.FileUtil;
-import me.asakura_kukii.siegefishing.handler.nonitem.player.InputHandler;
-import me.asakura_kukii.siegefishing.handler.inventory.SiegeInventoryListener;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -55,7 +53,6 @@ public class SiegeFishing{
 
 		InputHandler.keyMapper();
 		updater();
-		RodRender.startLoop();
 	}
 
 	public static void onDisable() {

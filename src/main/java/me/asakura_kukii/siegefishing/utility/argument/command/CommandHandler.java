@@ -1,23 +1,14 @@
 package me.asakura_kukii.siegefishing.utility.argument.command;
 
-import me.asakura_kukii.siegefishing.config.data.FileData;
-import me.asakura_kukii.siegefishing.config.data.addon.PlayerData;
-import me.asakura_kukii.siegefishing.handler.fishing.render.HookTracker;
-import me.asakura_kukii.siegefishing.handler.fishing.render.RodRender;
-import me.asakura_kukii.siegefishing.handler.fishing.render.RodRenderParam;
-import me.asakura_kukii.siegefishing.config.data.FileType;
-import me.asakura_kukii.siegefishing.config.io.FileIO;
-import me.asakura_kukii.siegefishing.handler.nonitem.player.PlayerHandler;
+import me.asakura_kukii.siegefishing.handler.fishing.FishingSession;
 import me.asakura_kukii.siegefishing.main.Main;
 import me.asakura_kukii.siegefishing.utility.argument.Argument;
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.block.Block;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.util.RayTraceResult;
+import org.bukkit.inventory.ItemStack;
 
 import static me.asakura_kukii.siegefishing.SiegeFishing.*;
 
@@ -96,57 +87,9 @@ public class CommandHandler {
             return;
         }
         Player player = (Player) sender;
-        RodRender rodRender = new RodRender();
-        if (rodRender.isFishing(player)){
-            rodRender.stopFishing(player);
-            return;
-        }
 
-        RayTraceResult rayTraceResult = player.rayTraceBlocks(10);
-        if (rayTraceResult == null){
-            sender.sendMessage(pluginPrefix + ChatColor.RED + "Not looking at Block");
-            return;
-        }
-        Block hitBlock = rayTraceResult.getHitBlock();
-        if (hitBlock == null){
-            sender.sendMessage(pluginPrefix + ChatColor.RED + "Not looking at Block");
-        }
-        Location location = rayTraceResult.getHitPosition().toLocation(player.getWorld());
-
-
-        rodRender.startFishing(player, new HookTracker() {
-            long current = 0;
-            @Override
-            public Location getRodLocation() {
-                return location;
-            }
-            final Color[] colors = {
-                    Color.WHITE,
-                    Color.SILVER,
-                    Color.GRAY,
-                    Color.BLACK,
-                    Color.RED,
-                    Color.MAROON,
-                    Color.YELLOW,
-                    Color.OLIVE,
-                    Color.LIME,
-                    Color.GREEN,
-                    Color.AQUA,
-                    Color.TEAL,
-                    Color.BLUE,
-                    Color.NAVY,
-                    Color.FUCHSIA,
-                    Color.PURPLE,
-                    Color.ORANGE
-            };
-
-            @Override
-            public RodRenderParam getRenderParam() {
-                current++;
-                return new RodRenderParam(20, 10, colors[Math.toIntExact(current % colors.length)].asRGB(), 1, (current % 100) / 100d);
-            }
-        });
-
+        FishingSession session = FishingSession.newSession(player, new ItemStack(Material.AIR));
+        session.start();
     }
 
     public static void handleReload(CommandSender sender, Argument argument) {

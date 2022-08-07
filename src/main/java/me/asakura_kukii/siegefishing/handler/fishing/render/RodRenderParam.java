@@ -9,9 +9,9 @@ public class RodRenderParam {
     // pressure
     private double pressure;
 
-    public RodRenderParam(double speed, double inteval, int color, double size, double pressure) {
+    public RodRenderParam(double speed, double interval, int color, double size, double pressure) {
         this.speed = speed;
-        this.inteval = inteval;
+        this.inteval = interval;
         this.color = color;
         this.size = size;
         this.pressure = pressure;
