@@ -2,7 +2,7 @@ package me.asakura_kukii.siegefishing.main;
 
 import me.asakura_kukii.siegefishing.SiegeFishing;
 import me.asakura_kukii.siegefishing.utility.argument.tab.TabHandler;
-import me.asakura_kukii.siegefishing.utility.format.Color;
+import me.asakura_kukii.siegefishing.utility.format.ColorHandler;
 import me.asakura_kukii.siegefishing.utility.argument.command.CommandHandler;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -32,7 +32,7 @@ public class Main extends JavaPlugin {
         dataFolder = getDataFolder();
         if (!dataFolder.exists()) {
             dataFolder.mkdirs();
-            getServer().getConsoleSender().sendMessage(Color.ANSI_GREEN + pluginPrefix + "Creating data folder" + Color.ANSI_WHITE);
+            getServer().getConsoleSender().sendMessage(ColorHandler.ANSI_GREEN + pluginPrefix + "Creating data folder" + ColorHandler.ANSI_WHITE);
         }
     }
 
@@ -45,18 +45,18 @@ public class Main extends JavaPlugin {
     public void onEnable() {
         main = this;
         if(Bukkit.getPluginManager().getPlugin("ProtocolLib") == null){
-            getServer().getConsoleSender().sendMessage(Color.ANSI_RED + consolePluginPrefix + "Missing ProtocolLib, disabling..." + Color.ANSI_WHITE);
+            getServer().getConsoleSender().sendMessage(ColorHandler.ANSI_RED + consolePluginPrefix + "Missing ProtocolLib, disabling..." + ColorHandler.ANSI_WHITE);
             Bukkit.getPluginManager().disablePlugin(this);
         }
         SiegeFishing.eventRegister(this);
-        getServer().getConsoleSender().sendMessage(Color.ANSI_GREEN + consolePluginPrefix + "Enabling " + pluginName + Color.ANSI_WHITE);
+        getServer().getConsoleSender().sendMessage(ColorHandler.ANSI_GREEN + consolePluginPrefix + "Enabling " + pluginName + ColorHandler.ANSI_WHITE);
         reloadValues();
     }
 
     @Override
     public void onDisable() {
         SiegeFishing.onDisable();
-        getServer().getConsoleSender().sendMessage(Color.ANSI_GREEN + consolePluginPrefix + pluginName + " disabled" + Color.ANSI_WHITE);
+        getServer().getConsoleSender().sendMessage(ColorHandler.ANSI_GREEN + consolePluginPrefix + pluginName + " disabled" + ColorHandler.ANSI_WHITE);
     }
 
     @Override

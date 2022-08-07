@@ -1,7 +1,7 @@
 package me.asakura_kukii.siegefishing.handler.nonitem.particle;
 
-import me.asakura_kukii.siegefishing.data.basic.ParticleData;
-import me.asakura_kukii.siegefishing.io.loader.common.FileType;
+import me.asakura_kukii.siegefishing.config.data.basic.ParticleData;
+import me.asakura_kukii.siegefishing.config.data.FileType;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;

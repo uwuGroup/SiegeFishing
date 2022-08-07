@@ -36,5 +36,10 @@
       <option name="name" value="dmulloy2-repo" />
       <option name="url" value="http://repo.dmulloy2.net/nexus/repository/public/" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="dmulloy2-repo" />
+      <option name="name" value="dmulloy2-repo" />
+      <option name="url" value="https://repo.dmulloy2.net/nexus/repository/public/" />
+    </remote-repository>
   </component>
 </project>

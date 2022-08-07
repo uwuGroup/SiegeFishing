@@ -1,7 +1,6 @@
 package me.asakura_kukii.siegefishing.utility.argument.tab;
 
-import me.asakura_kukii.siegefishing.data.common.FileData;
-import me.asakura_kukii.siegefishing.io.loader.common.FileType;
+import me.asakura_kukii.siegefishing.config.data.FileType;
 import me.asakura_kukii.siegefishing.utility.argument.Argument;
 import org.bukkit.command.CommandSender;
 
@@ -33,9 +32,9 @@ public class TabFile {
 
     public static List<String> tabType(String s) {
         List<String> sL = new ArrayList<>();
-        if (!FileType.getItemLinkedFileTypeNameList().contains(s)) {
+        if (!FileType.getFileTypeNameList().contains(s)) {
             sL.add("<TYPE>");
-            for (String fTN : FileType.getItemLinkedFileTypeNameList()) {
+            for (String fTN : FileType.getFileTypeNameList()) {
                 if (Argument.completeString(fTN, s)) {
                     sL.remove("<TYPE>");
                     sL.add(fTN);

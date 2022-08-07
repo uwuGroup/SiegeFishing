@@ -1,7 +1,7 @@
 package me.asakura_kukii.siegefishing.utility.argument.tab;
 
-import me.asakura_kukii.siegefishing.data.common.FileData;
-import me.asakura_kukii.siegefishing.io.loader.common.FileType;
+import me.asakura_kukii.siegefishing.config.data.FileData;
+import me.asakura_kukii.siegefishing.config.data.FileType;
 import me.asakura_kukii.siegefishing.utility.argument.Argument;
 import org.bukkit.command.CommandSender;
 

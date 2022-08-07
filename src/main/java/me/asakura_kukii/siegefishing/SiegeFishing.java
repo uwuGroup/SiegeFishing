@@ -1,16 +1,16 @@
 package me.asakura_kukii.siegefishing;
 
-import me.asakura_kukii.siegefishing.data.addon.FishSessionData;
-import me.asakura_kukii.siegefishing.data.basic.ConfigData;
-import me.asakura_kukii.siegefishing.data.basic.ImageMapData;
-import me.asakura_kukii.siegefishing.data.basic.ImageValueData;
-import me.asakura_kukii.siegefishing.data.common.FileData;
+import me.asakura_kukii.siegefishing.config.data.addon.FishSessionData;
+import me.asakura_kukii.siegefishing.config.data.basic.ConfigData;
+import me.asakura_kukii.siegefishing.config.data.FileData;
 import me.asakura_kukii.siegefishing.handler.fishing.render.RodRender;
-import me.asakura_kukii.siegefishing.io.loader.common.FileType;
-import me.asakura_kukii.siegefishing.io.loader.common.Loader;
-import me.asakura_kukii.siegefishing.io.util.FileUtil;
+import me.asakura_kukii.siegefishing.config.data.FileType;
+import me.asakura_kukii.siegefishing.config.io.FileIO;
+import me.asakura_kukii.siegefishing.handler.nonitem.player.SiegePlayerListener;
+import me.asakura_kukii.siegefishing.handler.region.SiegeRegionListener;
+import me.asakura_kukii.siegefishing.utility.file.FileUtil;
 import me.asakura_kukii.siegefishing.handler.nonitem.player.InputHandler;
-import me.asakura_kukii.siegefishing.utility.inventory.SiegeInventoryListener;
+import me.asakura_kukii.siegefishing.handler.inventory.SiegeInventoryListener;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -32,11 +32,17 @@ public class SiegeFishing{
 	public static HashMap<Plugin, BukkitTask> updaterRegister = new HashMap<>();
 
 	public static void eventRegister(Plugin p) {
-		Bukkit.getPluginManager().registerEvents(new SiegeFishingListener(), p);
+		Bukkit.getPluginManager().registerEvents(new SiegePlayerListener(), p);
+		Bukkit.getPluginManager().registerEvents(new SiegeRegionListener(), p);
 		Bukkit.getPluginManager().registerEvents(new SiegeInventoryListener(), p);
 	}
 
 	public static void onEnable(Server s, File pF, String pN, String pP, String cPP, Plugin p) {
+
+		if (server != null) {
+			FileIO.saveAll();
+		}
+
 		server = s;
 		pluginInstance = p;
 		pluginFolder = pF;
@@ -45,7 +51,7 @@ public class SiegeFishing{
 		pluginPrefix = pP;
 		consolePluginPrefix = cPP;
 
-		Loader.loadAll();
+		FileIO.loadAll();
 
 		InputHandler.keyMapper();
 		updater();
@@ -53,6 +59,7 @@ public class SiegeFishing{
 	}
 
 	public static void onDisable() {
+		FileIO.saveAll();
 	}
 
 	public static void updater() {
@@ -64,10 +71,12 @@ public class SiegeFishing{
 
 			@Override
 			public void run() {
+				Bukkit.getLogger().info(FileType.PLAYER_DATA.map.keySet().toString());
 				for (FileData fD : FileType.FISH_SESSION.map.values()) {
 					FishSessionData fSD = (FishSessionData) fD;
 					fSD.updateFishSession();
 				}
+
 			}
 		}.runTaskTimer(SiegeFishing.pluginInstance, 0, ConfigData.refreshDelay));
 	}

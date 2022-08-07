@@ -1,6 +1,8 @@
 package me.asakura_kukii.siegefishing.handler.nonitem.player;
 
 import me.asakura_kukii.siegefishing.SiegeFishing;
+import me.asakura_kukii.siegefishing.config.data.FileType;
+import me.asakura_kukii.siegefishing.config.data.addon.PlayerData;
 import me.asakura_kukii.siegefishing.utility.nms.NBTHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -90,8 +92,8 @@ public class InputHandler {
             //2nd round, update hand if there is any
             if (checkHold) {
                 keyHoldChecker(key, p, checkOff, slotOfHand);
-                PlayerHandler.playerDataMapper.get(p.getUniqueId()).keyHoldRegister.remove(key);
-                PlayerHandler.playerDataMapper.get(p.getUniqueId()).keyHoldRegister.put(key, 0);
+                PlayerHandler.getPlayerData(p).keyHoldRegister.remove(key);
+                PlayerHandler.getPlayerData(p).keyHoldRegister.put(key, 0);
             }
             return cancel;
         } else {
@@ -104,14 +106,14 @@ public class InputHandler {
             @Override
             public void run() {
                 if (Bukkit.getOnlinePlayers().contains(p)) {
-                    if (PlayerHandler.playerDataMapper.get(p.getUniqueId()).stateCache.containsKey(key) && PlayerHandler.playerDataMapper.get(p.getUniqueId()).stateCache.get(key)) {
-                        int holdTick = PlayerHandler.playerDataMapper.get(p.getUniqueId()).keyHoldRegister.get(key);
-                        PlayerHandler.playerDataMapper.get(p.getUniqueId()).keyHoldRegister.remove(key);
+                    if (PlayerHandler.getPlayerData(p).stateCache.containsKey(key) && PlayerHandler.getPlayerData(p).stateCache.get(key)) {
+                        int holdTick = PlayerHandler.getPlayerData(p).keyHoldRegister.get(key);
+                        PlayerHandler.getPlayerData(p).keyHoldRegister.remove(key);
                         holdTick ++;
-                        PlayerHandler.playerDataMapper.get(p.getUniqueId()).keyHoldRegister.put(key,holdTick);
+                        PlayerHandler.getPlayerData(p).keyHoldRegister.put(key,holdTick);
                         keyEvent(p, key, "Hold",false, false, checkOff, slotOfHand);
                     } else {
-                        PlayerHandler.playerDataMapper.get(p.getUniqueId()).keyHoldRegister.remove(key);
+                        PlayerHandler.getPlayerData(p).keyHoldRegister.remove(key);
                         if (checkOff) {
                             keyEvent(p, key, "Off",false, false, false, slotOfHand);
                         }

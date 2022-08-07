@@ -1,9 +1,9 @@
 package me.asakura_kukii.siegefishing.utility.argument.command;
 
 import me.asakura_kukii.siegefishing.SiegeFishing;
-import me.asakura_kukii.siegefishing.data.common.FileData;
-import me.asakura_kukii.siegefishing.io.loader.common.FileType;
-import me.asakura_kukii.siegefishing.io.loader.common.Loader;
+import me.asakura_kukii.siegefishing.config.data.FileData;
+import me.asakura_kukii.siegefishing.config.data.FileType;
+import me.asakura_kukii.siegefishing.config.io.FileIO;
 import me.asakura_kukii.siegefishing.utility.argument.Argument;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -65,7 +65,7 @@ public class CommandFile {
     }
 
     public static void listInvalid(CommandSender sender) {
-        List<String> invalidFileNameList = Loader.invalidFileNameList;
+        List<String> invalidFileNameList = FileIO.invalidFileNameList;
         if (invalidFileNameList.size() == 0) {
             sender.sendMessage(ChatColor.GRAY + ">> " + ChatColor.WHITE + "NO ITEM");
         } else if (invalidFileNameList.size() == 1) {
