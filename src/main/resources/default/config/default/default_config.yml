@@ -1,6 +1,5 @@
 identifier: default_config
 
 refreshDelay: 0
-sendPacketRadius: 32
-entityIdPercentageMin: 0.7
-entityIdPercentageMax: 0.8
+trailDistance: 0.5
+trailDensityBiasFactor: 3

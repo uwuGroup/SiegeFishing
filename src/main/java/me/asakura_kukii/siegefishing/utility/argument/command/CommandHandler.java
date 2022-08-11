@@ -1,6 +1,6 @@
 package me.asakura_kukii.siegefishing.utility.argument.command;
 
-import me.asakura_kukii.siegefishing.handler.fishing.FishingSession;
+import me.asakura_kukii.siegefishing.handler.method.fishing.FishingSession;
 import me.asakura_kukii.siegefishing.main.Main;
 import me.asakura_kukii.siegefishing.utility.argument.Argument;
 import org.bukkit.ChatColor;
@@ -73,6 +73,9 @@ public class CommandHandler {
                     sender.sendMessage(pluginPrefix + ChatColor.RED + "Permission error - Missing permission");
                     return true;
                 }
+                break;
+            case "hookBetaTest":
+
                 break;
             default:
                 sender.sendMessage(pluginPrefix + ChatColor.RED + "Invalid sub-argument");

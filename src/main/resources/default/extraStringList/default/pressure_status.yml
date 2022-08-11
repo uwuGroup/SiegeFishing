@@ -1,0 +1,5 @@
+identifier: pressure_status
+
+extraStringList:
+  - "@bar_0#"
+  - "@bar_1#"

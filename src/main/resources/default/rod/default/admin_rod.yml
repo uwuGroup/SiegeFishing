@@ -1,0 +1,21 @@
+identifier: admin_rod
+
+displayName: "&4&l测试竿竿"
+loreList:
+  - "管理员的测试用鱼竿"
+  - "其中蕴含着巨大的膜力"
+material: FEATHER
+customModelIndex: 1
+avgWaitTime: 600
+luckBoost: 0.5
+maxPressure: 30
+
+maxSwingDistance: 9
+swingVelocity: 0.2
+
+rodEndBiaxX: 0.4
+rodEndBiasY: 0.4
+rodEndBiasZ: 0.4
+
+stringParticleData: "particle^default_string"
+hookParticleData: "particle^default_hook"

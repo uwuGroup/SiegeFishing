@@ -1,6 +1,8 @@
 package me.asakura_kukii.siegefishing.config.data;
 
 import me.asakura_kukii.siegefishing.config.data.addon.PlayerData;
+import me.asakura_kukii.siegefishing.handler.player.input.InputKeyType;
+import me.asakura_kukii.siegefishing.handler.player.input.InputSubType;
 import me.asakura_kukii.siegefishing.utility.format.FormatHandler;
 import me.asakura_kukii.siegefishing.utility.nms.NBTHandler;
 import org.bukkit.Bukkit;
@@ -25,7 +27,9 @@ public abstract class ItemData extends FileData {
         super(identifier, fileName, fT);
     }
 
-    public abstract ItemStack finalizeGetItemStack(ItemData iD, ItemStack iS, PlayerData pD, int level);
+    public abstract ItemStack finalizeGenerateItemStack(ItemStack iS, PlayerData pD, int level);
+
+    public abstract boolean trigger(int triggerSlot, InputKeyType iKT, InputSubType iST, PlayerData pD, ItemStack iS);
 
     public static FileType getItemType(ItemStack iS) {
         if (NBTHandler.hasPluginCompoundTag(iS) && NBTHandler.contains(iS, "type") && NBTHandler.contains(iS, "id")) {
@@ -74,7 +78,7 @@ public abstract class ItemData extends FileData {
         iM.setUnbreakable(true);
 
         iS.setItemMeta(iM);
-        iS = iD.finalizeGetItemStack(iD, iS, pD, level);
+        iS = iD.finalizeGenerateItemStack(iS, pD, level);
         iS.setAmount(amount);
         return iS;
     }

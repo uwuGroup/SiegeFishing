@@ -2,6 +2,8 @@ package me.asakura_kukii.siegefishing.config.data.addon;
 
 import me.asakura_kukii.siegefishing.config.data.ItemData;
 import me.asakura_kukii.siegefishing.config.data.FileType;
+import me.asakura_kukii.siegefishing.handler.player.input.InputKeyType;
+import me.asakura_kukii.siegefishing.handler.player.input.InputSubType;
 import me.asakura_kukii.siegefishing.utility.format.FormatHandler;
 import me.asakura_kukii.siegefishing.utility.nms.NBTHandler;
 import org.bukkit.inventory.ItemStack;
@@ -28,7 +30,7 @@ public class FishData extends ItemData {
     //public HashMap<, Double>
 
     @Override
-    public ItemStack finalizeGetItemStack(ItemData iD, ItemStack iS, PlayerData pD, int level) {
+    public ItemStack finalizeGenerateItemStack(ItemStack iS, PlayerData pD, int level) {
 
         Random r = new Random();
         double d = r.nextDouble();
@@ -59,7 +61,7 @@ public class FishData extends ItemData {
                         s = s.replaceAll("%emotion%", e);
                     }
                     if (s.contains("%identifier%")) {
-                        s = s.replaceAll("%identifier%", iD.identifier);
+                        s = s.replaceAll("%identifier%", identifier);
                     }
                     modifiedLoreList.add(s);
                 }
@@ -70,6 +72,11 @@ public class FishData extends ItemData {
             iS.setItemMeta(iM);
         }
         return iS;
+    }
+
+    @Override
+    public boolean trigger(int triggerSlot, InputKeyType iKT, InputSubType iST, PlayerData pD, ItemStack iS) {
+        return false;
     }
 
     public static String getRandomFishEmotion() {
@@ -96,16 +103,5 @@ public class FishData extends ItemData {
         int index = (int) Math.floor(d - 10 * Math.floor(d / 10));
         String[] chineseCharacter = {"零", "一", "二", "三", "四", "五", "六", "七", "八", "九"};
         return chineseCharacter[index];
-    }
-
-    public static FishData getData(ItemStack iS) {
-        if (NBTHandler.hasPluginCompoundTag(iS) && NBTHandler.contains(iS, "type") && NBTHandler.contains(iS, "id")) {
-            if (((String) NBTHandler.get(iS, "type", String.class)).matches("fish")) {
-                if (FileType.FISH.map.containsKey((String) NBTHandler.get(iS, "id", String.class))) {
-                    return (FishData) FileType.FISH.map.get((String) NBTHandler.get(iS, "id", String.class));
-                }
-            }
-        }
-        return null;
     }
 }

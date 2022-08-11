@@ -1,0 +1,15 @@
+identifier: default_hook
+
+particle: REDSTONE
+count: 1
+extra: 1
+sizeX: 0
+sizeY: 0
+sizeZ: 0
+colorR: 0
+colorG: 255
+colorB: 0
+biasX: 0
+biasY: 0
+biasZ: 0
+material: GRASS_BLOCK

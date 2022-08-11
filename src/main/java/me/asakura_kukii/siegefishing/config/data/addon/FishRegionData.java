@@ -1,5 +1,6 @@
 package me.asakura_kukii.siegefishing.config.data.addon;
 
+import me.asakura_kukii.siegefishing.config.data.FileData;
 import me.asakura_kukii.siegefishing.config.data.basic.ImageValueData;
 import me.asakura_kukii.siegefishing.config.data.ItemData;
 import me.asakura_kukii.siegefishing.config.data.FileType;
@@ -8,17 +9,12 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 
-public class FishRegionData extends ItemData {
+public class FishRegionData extends FileData {
     public ImageValueData regionValue;
     public HashMap<FishData, Double> percentMap;
 
     public FishRegionData(String identifier, String fileName, FileType fT) {
         super(identifier, fileName, fT);
-    }
-
-    @Override
-    public ItemStack finalizeGetItemStack(ItemData iD, ItemStack iS, PlayerData pD, int level) {
-        return iS;
     }
 
     public static FishRegionData getData(ItemStack iS) {

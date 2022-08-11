@@ -6,11 +6,8 @@ import me.asakura_kukii.siegefishing.config.data.FileType;
 public class ConfigData extends FileData {
 
     public static Integer refreshDelay = 0;
-    public static Integer sendPacketRadius = 32;
-    public static Double entityIdPercentageMin = 0.7;
-    public static Double entityIdPercentageMax = 0.8;
-
-
+    public static double trailDistance = 0.4;
+    public static double trailDensityBiasFactor = 1;
     public ConfigData(String identifier, String fileName, FileType fT) {
         super(identifier, fileName, fT);
     }

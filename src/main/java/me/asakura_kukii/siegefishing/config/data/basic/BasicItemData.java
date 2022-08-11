@@ -3,6 +3,8 @@ package me.asakura_kukii.siegefishing.config.data.basic;
 import me.asakura_kukii.siegefishing.config.data.ItemData;
 import me.asakura_kukii.siegefishing.config.data.FileType;
 import me.asakura_kukii.siegefishing.config.data.addon.PlayerData;
+import me.asakura_kukii.siegefishing.handler.player.input.InputKeyType;
+import me.asakura_kukii.siegefishing.handler.player.input.InputSubType;
 import me.asakura_kukii.siegefishing.utility.nms.NBTHandler;
 import org.bukkit.inventory.ItemStack;
 
@@ -13,8 +15,13 @@ public class BasicItemData extends ItemData {
     }
 
     @Override
-    public ItemStack finalizeGetItemStack(ItemData iD, ItemStack iS, PlayerData pD, int level) {
+    public ItemStack finalizeGenerateItemStack(ItemStack iS, PlayerData pD, int level) {
         return iS;
+    }
+
+    @Override
+    public boolean trigger(int triggerSlot, InputKeyType iKT, InputSubType iST, PlayerData pD, ItemStack iS) {
+        return false;
     }
 
     public static BasicItemData getData(ItemStack iS) {

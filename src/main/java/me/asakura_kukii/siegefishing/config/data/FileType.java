@@ -16,11 +16,18 @@ public enum FileType {
     EXTRA_STRING_LIST(  "extraStringList",      new ExtraStringListFileIO(),    false,  IOOption.LOAD_ALL_ON_START,     IOOption.NO_SAVE),
     IMAGE_MAP(          "imageMap",             new ImageMapFileIO(),           false,  IOOption.LOAD_ALL_ON_START,     IOOption.NO_SAVE),
     IMAGE_VALUE(        "imageValue",           new ImageValueFileIO(),         false,  IOOption.LOAD_ALL_ON_START,     IOOption.NO_SAVE),
-    FISH(               "fish",                 new FishFileIO(),               true,   IOOption.LOAD_ALL_ON_START,     IOOption.NO_SAVE),
     BASIC_ITEM(         "basicItem",            new BasicItemFileIO(),          true,   IOOption.LOAD_ALL_ON_START,     IOOption.NO_SAVE),
     PARTICLE(           "particle",             new ParticleFileIO(),           false,  IOOption.LOAD_ALL_ON_START,     IOOption.NO_SAVE),
     SOUND(              "sound",                new SoundFileIO(),              false,  IOOption.LOAD_ALL_ON_START,     IOOption.NO_SAVE),
+
+    FISH(               "fish",                 new FishFileIO(),               true,   IOOption.LOAD_ALL_ON_START,     IOOption.NO_SAVE),
+    ROD(                "rod",                  new RodFileIO(),                true,   IOOption.LOAD_ALL_ON_START,     IOOption.NO_SAVE),
+
     CONFIG(             "config",               new ConfigFileIO(),             false,  IOOption.LOAD_ALL_ON_START,     IOOption.NO_SAVE),
+
+
+
+
     PLAYER_DATA(        "playerData",           new PlayerDataFileIO(),         false,  IOOption.LOAD_ON_DEMAND,        IOOption.SAVE_ALL_ON_STOP),
     FISH_REGION(        "fishRegion",           new FishRegionFileIO(),         false,  IOOption.LOAD_ALL_ON_START,     IOOption.NO_SAVE),
     FISH_SESSION(       "fishSession",          new FishSessionFileIO(),        false,  IOOption.LOAD_ALL_ON_START,     IOOption.NO_SAVE);

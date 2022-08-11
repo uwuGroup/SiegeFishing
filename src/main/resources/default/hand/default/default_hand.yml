@@ -1,0 +1,6 @@
+identifier: default_hand
+
+displayName: "HAND"
+material: AMETHYST_SHARD
+loreList: []
+customModelIndex: 1

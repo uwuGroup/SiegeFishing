@@ -1,0 +1,15 @@
+identifier: default_string
+
+particle: REDSTONE
+count: 1
+extra: 0.6
+sizeX: 0
+sizeY: 0
+sizeZ: 0
+colorR: 255
+colorG: 0
+colorB: 0
+biasX: 0
+biasY: 0
+biasZ: 0
+material: GRASS_BLOCK

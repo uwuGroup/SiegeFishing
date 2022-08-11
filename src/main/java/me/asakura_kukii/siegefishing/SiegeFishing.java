@@ -5,13 +5,17 @@ import me.asakura_kukii.siegefishing.config.data.FileType;
 import me.asakura_kukii.siegefishing.config.data.addon.FishSessionData;
 import me.asakura_kukii.siegefishing.config.data.basic.ConfigData;
 import me.asakura_kukii.siegefishing.config.io.FileIO;
-import me.asakura_kukii.siegefishing.handler.inventory.SiegeInventoryListener;
-import me.asakura_kukii.siegefishing.handler.nonitem.player.InputHandler;
-import me.asakura_kukii.siegefishing.handler.nonitem.player.SiegePlayerListener;
-import me.asakura_kukii.siegefishing.handler.region.SiegeRegionListener;
+import me.asakura_kukii.siegefishing.handler.method.fishingbeta.FishingTaskData;
+import me.asakura_kukii.siegefishing.handler.method.inventory.SiegeInventoryListener;
+import me.asakura_kukii.siegefishing.handler.player.input.InputHandler;
+import me.asakura_kukii.siegefishing.handler.player.PlayerDataListener;
+import me.asakura_kukii.siegefishing.handler.method.region.SiegeRegionListener;
+import me.asakura_kukii.siegefishing.handler.player.input.InputListener;
 import me.asakura_kukii.siegefishing.utility.file.FileUtil;
+import me.asakura_kukii.siegefishing.utility.nms.NMSHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -29,10 +33,11 @@ public class SiegeFishing{
 	public static String consolePluginPrefix = null;
 	public static HashMap<Plugin, BukkitTask> updaterRegister = new HashMap<>();
 
-	public static void eventRegister(Plugin p) {
-		Bukkit.getPluginManager().registerEvents(new SiegePlayerListener(), p);
-		Bukkit.getPluginManager().registerEvents(new SiegeRegionListener(), p);
-		Bukkit.getPluginManager().registerEvents(new SiegeInventoryListener(), p);
+	public static void eventRegister(Plugin plugin) {
+		Bukkit.getPluginManager().registerEvents(new PlayerDataListener(), plugin);
+		Bukkit.getPluginManager().registerEvents(new InputListener(), plugin);
+		Bukkit.getPluginManager().registerEvents(new SiegeRegionListener(), plugin);
+		Bukkit.getPluginManager().registerEvents(new SiegeInventoryListener(), plugin);
 	}
 
 	public static void onEnable(Server s, File pF, String pN, String pP, String cPP, Plugin p) {
@@ -68,10 +73,12 @@ public class SiegeFishing{
 
 			@Override
 			public void run() {
-				Bukkit.getLogger().info(FileType.PLAYER_DATA.map.keySet().toString());
 				for (FileData fD : FileType.FISH_SESSION.map.values()) {
 					FishSessionData fSD = (FishSessionData) fD;
 					fSD.updateFishSession();
+				}
+				for (FishingTaskData fTD : FishingTaskData.fishingTaskMap.values()) {
+					fTD.update();
 				}
 
 			}

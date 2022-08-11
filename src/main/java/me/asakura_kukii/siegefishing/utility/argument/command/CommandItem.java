@@ -4,10 +4,10 @@ import me.asakura_kukii.siegefishing.SiegeFishing;
 import me.asakura_kukii.siegefishing.config.data.FileData;
 import me.asakura_kukii.siegefishing.config.data.ItemData;
 import me.asakura_kukii.siegefishing.config.data.addon.PlayerData;
-import me.asakura_kukii.siegefishing.handler.nonitem.player.PlayerHandler;
+import me.asakura_kukii.siegefishing.handler.player.PlayerDataHandler;
 import me.asakura_kukii.siegefishing.config.data.FileType;
 import me.asakura_kukii.siegefishing.utility.argument.Argument;
-import me.asakura_kukii.siegefishing.handler.inventory.SiegeInventory;
+import me.asakura_kukii.siegefishing.handler.method.inventory.SiegeInventory;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -65,7 +65,7 @@ public class CommandItem {
         }
 
         Player p = (Player) sender;
-        PlayerData pD = PlayerHandler.getPlayerData(p);
+        PlayerData pD = PlayerDataHandler.getPlayerData(p);
 
         ItemData iD = (ItemData) fT.map.get(identifier);
         ItemData.sendItemStack(iD, pD,1);

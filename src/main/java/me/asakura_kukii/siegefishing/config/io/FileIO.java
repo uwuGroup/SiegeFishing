@@ -79,6 +79,8 @@ public abstract class FileIO {
                 server.getConsoleSender().sendMessage(ColorHandler.ANSI_GREEN + consolePluginPrefix + ColorHandler.ANSI_WHITE + "Loaded " + fT.map.keySet().size() + " " + fT.typeName);
             } else {
                 FileUtil.loadSubfolder(fT.folder.getName());
+                loadDefaultFile(fT);
+                loadFileTreeRecursively(fT.folder, fT, "");
             }
         }
     }
@@ -175,7 +177,6 @@ public abstract class FileIO {
 
     public static void loadDefaultFile(FileType fT) {
         try {
-
             FileUtil.copyJarResourcesRecursively(fT.folder, "default/" + fT.typeName);
         } catch (Exception e) {
             e.printStackTrace();
