@@ -1,6 +1,7 @@
 package me.asakura_kukii.siegefishing.handler.method.fishingbeta;
 
 import me.asakura_kukii.siegefishing.SiegeFishing;
+import me.asakura_kukii.siegefishing.config.data.ItemData;
 import me.asakura_kukii.siegefishing.config.data.addon.*;
 import me.asakura_kukii.siegefishing.config.data.basic.ConfigData;
 import me.asakura_kukii.siegefishing.handler.effect.particle.ParticleHandler;
@@ -10,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -29,7 +31,8 @@ public class FishingTaskData {
     public final double getDistance = 4;    //get distance for player to get the fish
     public final double runAwayVelocity = 0.1;
     public final double randomVelocity = 0.1;
-    public final double playerMaxVelocity = 0.02;
+    public final double playerMaxVelocity = 0.015;
+    public final double failPressure = 0.3;
 
     public Player p;
     public ItemStack iS;
@@ -59,6 +62,9 @@ public class FishingTaskData {
     public Vector randomVel = new Vector(0, 0, 0);
     public double vitality;
 
+    public double distanceSuccessPercentage = 0;
+    public double vitalitySuccessPercentage = 0;
+
     public FishingTaskData(PlayerData pD, RodData rD, ItemStack iS) {
         this.p = pD.p;
         this.pD = pD;
@@ -73,6 +79,19 @@ public class FishingTaskData {
         this.waitTime = (int) Math.floor(rG * rD.avgWaitTime);
 
         fishingTaskMap.put(pD.p.getUniqueId(), this);
+    }
+
+    public boolean finish() {
+        double d = r.nextDouble();
+        if (d > distanceSuccessPercentage * vitalitySuccessPercentage) {
+            kill();
+            return false;
+        }
+        ItemStack iS = ItemData.getItemStack(fD, pD, 1, 0);
+        Item i = Objects.requireNonNull(hookLoc.getWorld()).dropItem(hookLoc, iS);
+        i.setVelocity(pD.p.getLocation().toVector().subtract(hookLoc.toVector()).normalize().multiply(0.5).add(new Vector(0, 0.3, 0)));
+        kill();
+        return true;
     }
 
     public void kill() {
@@ -109,9 +128,10 @@ public class FishingTaskData {
     }
 
     public void renderString() {
-        double distance = hookLoc.distance(rodEndLoc.clone());
-        double yDistance = Math.abs(hookLoc.clone().toVector().subtract(rodEndLoc.clone().toVector()).getY());
-        Vector step = hookLoc.toVector().subtract(rodEndLoc.clone().toVector()).clone().normalize();
+        Location biasedHookLoc = hookLoc.clone().add(new Vector(0, 0, 0));
+        double distance = biasedHookLoc.distance(rodEndLoc.clone());
+        double yDistance = Math.abs(biasedHookLoc.clone().toVector().subtract(rodEndLoc.clone().toVector()).getY());
+        Vector step = biasedHookLoc.toVector().subtract(rodEndLoc.clone().toVector()).clone().normalize();
         Location start = rodEndLoc.clone().clone();
 
         double pressure = 1.4;

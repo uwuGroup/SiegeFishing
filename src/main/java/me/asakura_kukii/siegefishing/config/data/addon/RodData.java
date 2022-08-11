@@ -49,7 +49,7 @@ public class RodData extends ItemData {
     public boolean handleLeftClick(int triggerSlot, InputKeyType iKT, InputSubType iST, PlayerData pD, ItemStack iS) {
         if (FishingTaskData.fishingTaskMap.containsKey(pD.p.getUniqueId())) {
             FishingTaskData fTD = FishingTaskData.fishingTaskMap.get(pD.p.getUniqueId());
-            fTD.kill();
+            fTD.finish();
         } else {
             FishingTaskData fTD = new FishingTaskData(pD, this, iS);
         }

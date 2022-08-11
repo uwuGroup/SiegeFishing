@@ -1,14 +1,19 @@
 package me.asakura_kukii.siegefishing.handler.method.fishingbeta.stage;
 
 import me.asakura_kukii.siegefishing.config.data.FileType;
+import me.asakura_kukii.siegefishing.config.data.ItemData;
 import me.asakura_kukii.siegefishing.config.data.addon.ExtraStringListData;
+import me.asakura_kukii.siegefishing.config.data.addon.FishData;
 import me.asakura_kukii.siegefishing.handler.method.fishingbeta.FishingTaskData;
 import me.asakura_kukii.siegefishing.utility.format.ColorHandler;
 import me.asakura_kukii.siegefishing.utility.format.FormatHandler;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.minecraft.world.entity.EntityType;
 import org.bukkit.FluidCollisionMode;
+import org.bukkit.entity.Item;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
@@ -18,6 +23,9 @@ public class HookedHandler extends StageHandler{
 
     @Override
     public void update(FishingTaskData fTD) {
+
+
+
         //count timer
         fTD.timer--;
 
@@ -47,9 +55,6 @@ public class HookedHandler extends StageHandler{
         if (vitalityDamage < 0) vitalityDamage = 0;
         fTD.vitality = fTD.vitality - vitalityDamage;
 
-        //this part belongs to render
-        hotBarMsg(fTD);
-
         //collision check
         if (fTD.hookVel.length() == 0) {
             fTD.hookLoc = fTD.hookLoc.add(fTD.hookVel);
@@ -68,6 +73,20 @@ public class HookedHandler extends StageHandler{
         } else {
             fTD.hookLoc = fTD.hookLoc.add(fTD.hookVel);
         }
+        //check pressure and result
+        if (fTD.pressure > fTD.rD.maxPressure) fTD.pD.p.sendMessage("failed because of large pressure");
+        if (fTD.pressure < fTD.failPressure * fTD.fD.difficulty) fTD.pD.p.sendMessage("failed because of small pressure");
+
+        fTD.distanceSuccessPercentage = 1 - (fTD.distance - fTD.getDistance) / (fTD.stdDistance - fTD.getDistance);
+        if (fTD.distanceSuccessPercentage > 1) fTD.distanceSuccessPercentage = 1;
+        if (fTD.distanceSuccessPercentage < 0) fTD.distanceSuccessPercentage = 0;
+
+        fTD.vitalitySuccessPercentage = 1 - fTD.vitality / fTD.refVitality;
+        if (fTD.vitalitySuccessPercentage > 1) fTD.vitalitySuccessPercentage = 1;
+        if (fTD.vitalitySuccessPercentage < 0) fTD.vitalitySuccessPercentage = 0;
+
+        //this part belongs to render
+        hotBarMsg(fTD);
     }
 
     private void updateRandomVel(FishingTaskData fTD) {
@@ -99,15 +118,12 @@ public class HookedHandler extends StageHandler{
 
     private void hotBarMsg(FishingTaskData fTD) {
 
-        double distanceGetToMaxPercentage = 1 - (fTD.distance - fTD.getDistance) / (fTD.stdDistance - fTD.getDistance);
-        if (distanceGetToMaxPercentage > 1) distanceGetToMaxPercentage = 1;
-        if (distanceGetToMaxPercentage < 0) distanceGetToMaxPercentage = 0;
-        int distanceStringIndex = (int) Math.floor(distanceGetToMaxPercentage * 16);
+        int distanceStringIndex = (int) Math.floor(fTD.distanceSuccessPercentage * 16);
         if (distanceStringIndex > 15) distanceStringIndex = 15;
         if (distanceStringIndex < 0) distanceStringIndex = 0;
 
         ExtraStringListData dSL = (ExtraStringListData) FileType.EXTRA_STRING_LIST.map.get("distance_status");
-        String dS = percentToChatColor(fTD, distanceGetToMaxPercentage, 16) + FormatHandler.format(dSL.extraStringList.get(distanceStringIndex), false);
+        String dS = percentToChatColor(fTD, fTD.distanceSuccessPercentage, 16) + FormatHandler.format(dSL.extraStringList.get(distanceStringIndex), false);
 
         StringBuilder pressureBarString = new StringBuilder();
         for (double i = 0; i < fTD.rD.maxPressure; i = i + 0.1) {
@@ -127,7 +143,7 @@ public class HookedHandler extends StageHandler{
         ExtraStringListData vSL = (ExtraStringListData) FileType.EXTRA_STRING_LIST.map.get("vitality_status");
 
         String vS = FormatHandler.format(vSL.extraStringList.get(vitalityIndex), false);
-        fTD.pD.hotBarMsg = dS + " " + pressureBarString + " " + vS;
+        fTD.pD.hotBarMsg = dS + " " + pressureBarString + " " + vS + fTD.vitalitySuccessPercentage * fTD.distanceSuccessPercentage;
         fTD.pD.p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(fTD.pD.hotBarMsg));
     }
 
