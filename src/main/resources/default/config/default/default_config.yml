@@ -3,3 +3,4 @@ identifier: default_config
 refreshDelay: 0
 trailDistance: 0.5
 trailDensityBiasFactor: 3
+fishBoxName: "&&FF5ABB%player%&f&l的鱼鱼存储箱"

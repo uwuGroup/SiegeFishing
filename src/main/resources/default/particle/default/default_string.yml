@@ -1,8 +1,8 @@
 identifier: default_string
 
-particle: REDSTONE
+particle: EXPLOSION_LARGE
 count: 1
-extra: 0.6
+extra: 0
 sizeX: 0
 sizeY: 0
 sizeZ: 0

@@ -77,6 +77,9 @@ public class VerifyFileData extends Verifier {
     public FileConfiguration set(FileConfiguration fC, FileData fD, String path, Object obj) {
         FileData fD1 = (FileData) obj;
         String s = fD1.fT.typeName + "^" + fD1.identifier;
+        if (fD1.identifier.equalsIgnoreCase("")) {
+            s = "";
+        }
         fC.set(path, s);
         return fC;
     }

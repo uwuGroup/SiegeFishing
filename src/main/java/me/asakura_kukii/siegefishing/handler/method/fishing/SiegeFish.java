@@ -33,7 +33,7 @@ public class SiegeFish implements WeightedRandom {
         double fishSize = (fishData.weightMax * random.nextGaussian() + fishData.weightMin);
         double speed = fishSize * 5;
         double hp = fishSize * 20 + 100;
-        double strength = fishData.difficulty;
+        double strength = fishData.rarityLevel;
         return new FishAI(speed, hp, strength);
     }
 

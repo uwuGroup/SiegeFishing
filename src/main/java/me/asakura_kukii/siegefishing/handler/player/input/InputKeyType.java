@@ -11,7 +11,8 @@ public enum InputKeyType {
     ITEM_SWAP(false, true),
     ITEM_INITIATE(false, true),
     ITEM_FINALIZE(false, true),
-    ITEM_DROP(false, true)
+    ITEM_DROP(false, true),
+    ITEM_CONSUME(false, true);
     ;
 
     public boolean checkHold;

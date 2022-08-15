@@ -106,5 +106,12 @@
 			<artifactId>ProtocolLib</artifactId>
 			<version>4.8.0</version>
 		</dependency>
+		<dependency>
+			<groupId>SiegeMountHandler</groupId>
+			<artifactId>SiegeMountHandler</artifactId>
+			<version>0.0.1</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/SiegeMountHandler-0.0.2.jar</systemPath>
+		</dependency>
 	</dependencies>
 </project>

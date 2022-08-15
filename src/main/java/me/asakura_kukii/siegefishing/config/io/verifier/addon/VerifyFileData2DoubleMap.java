@@ -93,6 +93,9 @@ public class VerifyFileData2DoubleMap extends Verifier {
         for (FileData fD1 : fileData2DoubleMap.keySet()) {
             Double d = fileData2DoubleMap.get(fD1);
             String s = fD1.fT.typeName + "^" + fD1.identifier + "^" + d.toString();
+            if (fD1.identifier.equalsIgnoreCase("")) {
+                s = "";
+            }
             sL.add(s);
         }
         fC.set(path, sL);

@@ -4,6 +4,7 @@ import me.asakura_kukii.siegefishing.SiegeFishing;
 import me.asakura_kukii.siegefishing.config.data.FileData;
 import me.asakura_kukii.siegefishing.config.data.ItemData;
 import me.asakura_kukii.siegefishing.config.data.addon.PlayerData;
+import me.asakura_kukii.siegefishing.handler.method.inventory.SiegeShowcase;
 import me.asakura_kukii.siegefishing.handler.player.PlayerDataHandler;
 import me.asakura_kukii.siegefishing.config.data.FileType;
 import me.asakura_kukii.siegefishing.utility.argument.Argument;
@@ -68,7 +69,7 @@ public class CommandItem {
         PlayerData pD = PlayerDataHandler.getPlayerData(p);
 
         ItemData iD = (ItemData) fT.map.get(identifier);
-        ItemData.sendItemStack(iD, pD,1);
+        ItemData.sendItemStack(iD, pD,1, 0);
         sender.sendMessage(ChatColor.GRAY + ">> " + ChatColor.WHITE + "SUCCESSFULLY SEND ITEM");
     }
 
@@ -121,8 +122,8 @@ public class CommandItem {
         for (FileData fD : FileType.getSortedFileDataList(fT)) {
             itemStackList.add(ItemData.getItemStack((ItemData) fD, null, 1, 0));
         }
-        SiegeInventory itemInventory = new SiegeInventory(ChatColor.WHITE + "" + ChatColor.BOLD + "VIEW: " + fT.typeName, itemStackList, true);
-        itemInventory.showInventoryToPlayer((Player) sender);
+        SiegeInventory itemInventory = new SiegeShowcase(((Player) sender), ChatColor.WHITE + "" + ChatColor.BOLD + "VIEW: " + fT.typeName, itemStackList, 54);
+        itemInventory.show((Player) sender);
         sender.sendMessage(ChatColor.GRAY + ">> " + ChatColor.WHITE + "SUCCESSFULLY VIEW TYPE");
     }
 }

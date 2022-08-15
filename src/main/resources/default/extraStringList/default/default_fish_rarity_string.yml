@@ -1,0 +1,8 @@
+identifier: default_fish_rarity_string
+
+extraStringList:
+  - "&&B1B1B1&l垃圾"
+  - "&&EAEEFF&l广泛"
+  - "&&FFB4E3&l罕见"
+  - "&&FFF785&l珍稀"
+  - "&&FF685E&l❤"

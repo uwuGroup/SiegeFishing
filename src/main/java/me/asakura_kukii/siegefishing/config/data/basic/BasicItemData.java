@@ -15,7 +15,7 @@ public class BasicItemData extends ItemData {
     }
 
     @Override
-    public ItemStack finalizeGenerateItemStack(ItemStack iS, PlayerData pD, int level) {
+    public ItemStack finalizeGenerateItemStack(ItemStack iS, PlayerData pD, int extra) {
         return iS;
     }
 

@@ -2,6 +2,7 @@ package me.asakura_kukii.siegefishing.main;
 
 import me.asakura_kukii.siegefishing.SiegeFishing;
 import me.asakura_kukii.siegefishing.utility.argument.tab.TabHandler;
+import me.asakura_kukii.siegefishing.utility.file.FileUtil;
 import me.asakura_kukii.siegefishing.utility.format.ColorHandler;
 import me.asakura_kukii.siegefishing.utility.argument.command.CommandHandler;
 import org.bukkit.command.Command;
@@ -12,11 +13,12 @@ import org.bukkit.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Main extends JavaPlugin {
 
     public static File dataFolder;
-
+    public static File tempFolder;
     private static Main main;
     public static Main getInstance() {
         return main;
@@ -33,6 +35,15 @@ public class Main extends JavaPlugin {
         if (!dataFolder.exists()) {
             dataFolder.mkdirs();
             getServer().getConsoleSender().sendMessage(ColorHandler.ANSI_GREEN + pluginPrefix + "Creating data folder" + ColorHandler.ANSI_WHITE);
+        }
+        tempFolder = new File(dataFolder, "temp");
+        if (tempFolder.exists() && tempFolder.isDirectory()) {
+            for (File tempFile : Objects.requireNonNull(tempFolder.listFiles())) {
+                tempFile.delete();
+            }
+        } else {
+            tempFolder.delete();
+            tempFolder.mkdir();
         }
     }
 
@@ -72,10 +83,7 @@ public class Main extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (command.getName().equalsIgnoreCase("SiegeFishing")) {
-            if (args.length > 0) {
-                return CommandHandler.onCommand(sender, command, label, args);
-            }
-            return true;
+            return CommandHandler.onCommand(sender, command, label, args);
         }
         return true;
     }

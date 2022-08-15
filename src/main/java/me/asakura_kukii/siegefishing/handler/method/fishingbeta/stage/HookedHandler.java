@@ -4,6 +4,11 @@ import me.asakura_kukii.siegefishing.config.data.FileType;
 import me.asakura_kukii.siegefishing.config.data.ItemData;
 import me.asakura_kukii.siegefishing.config.data.addon.ExtraStringListData;
 import me.asakura_kukii.siegefishing.config.data.addon.FishData;
+import me.asakura_kukii.siegefishing.config.data.basic.ParticleData;
+import me.asakura_kukii.siegefishing.config.data.basic.SoundData;
+import me.asakura_kukii.siegefishing.handler.effect.particle.ParticleHandler;
+import me.asakura_kukii.siegefishing.handler.effect.sound.SoundHandler;
+import me.asakura_kukii.siegefishing.handler.method.achievement.AchievementUtil;
 import me.asakura_kukii.siegefishing.handler.method.fishingbeta.FishingTaskData;
 import me.asakura_kukii.siegefishing.utility.format.ColorHandler;
 import me.asakura_kukii.siegefishing.utility.format.FormatHandler;
@@ -24,10 +29,32 @@ public class HookedHandler extends StageHandler{
     @Override
     public void update(FishingTaskData fTD) {
 
+        if (fTD.pD.p.isInWater() && !fTD.dragged) {
+            fTD.dragged = true;
+            try {
+                AchievementUtil.broadCast(fTD.pD.p, ExtraStringListData.random("default_fishing_failure_drag"), 32);
+                fTD.kill();
+            } catch (Exception ignored) {
+            }
+        }
 
 
         //count timer
         fTD.timer--;
+        fTD.soundTimer--;
+        if (fTD.soundTimer <= 0) {
+            fTD.soundTimer = (int) Math.ceil(fTD.r.nextDouble() * 40 + 20);
+            try {
+                SoundHandler.playSoundAtLoc(fTD.hookLoc, (SoundData) FileType.SOUND.map.get("default_swim"));
+            } catch (Exception ignored) {}
+        }
+
+        try {
+            ParticleHandler.spawnParticleAtLoc(fTD.hookLoc, (ParticleData) FileType.PARTICLE.map.get("default_splash_swim"), false);
+        } catch (Exception ignored) {}
+
+
+
 
         //update free velocity
         updateRandomVel(fTD);
@@ -46,12 +73,12 @@ public class HookedHandler extends StageHandler{
         fTD.hookVel = fTD.hookVel.add(runAwayDirection.multiply(-distancePercentageRelativeToStdDistance).multiply(fTD.runAwayVelocity));
 
         double pressureFromControlledDistance = 8 * (fTD.distance / fTD.stringDistance - fTD.distance / fTD.targetDistance) + fTD.distance / fTD.targetDistance;
-        double pressureValue = fTD.fD.difficulty * pressureFromControlledDistance;
+        double pressureValue = fTD.difficulty * pressureFromControlledDistance;
         fTD.pressure = pressureValue;
 
 
         //tiredness decreasing velocity, which is (pressure - 1) * difficulty
-        double vitalityDamage = pressureValue - fTD.fD.difficulty;
+        double vitalityDamage = pressureValue - fTD.difficulty;
         if (vitalityDamage < 0) vitalityDamage = 0;
         fTD.vitality = fTD.vitality - vitalityDamage;
 
@@ -62,11 +89,13 @@ public class HookedHandler extends StageHandler{
         }
         RayTraceResult rTR = Objects.requireNonNull(fTD.hookLoc.clone().getWorld()).rayTraceBlocks(fTD.hookLoc.clone().add(new Vector(0, -1, 0)), fTD.hookVel.clone(), fTD.hookVel.clone().length(), FluidCollisionMode.NEVER, true);
         if (rTR != null) {
+            //bounce, set timer to 0 to recalculate random direction
+            fTD.timer = 0;
             Vector bounceDirection = Objects.requireNonNull(rTR.getHitBlockFace()).getDirection().normalize();
             Vector bouncePosition = rTR.getHitPosition();
             Vector d = bounceDirection.clone().multiply(fTD.hookVel.clone().dot(bounceDirection.clone()));
             Vector e = fTD.hookVel.clone().subtract(d.clone()).multiply(1);
-            Vector f = d.clone().multiply(-1).multiply(0);
+            Vector f = d.clone().multiply(-1).multiply(0.4);
             Vector bounceVelocity = e.clone().add(f.clone());
             fTD.hookLoc = bouncePosition.toLocation(Objects.requireNonNull(fTD.hookLoc.getWorld())).add(new Vector(0, 1, 0));
             fTD.hookVel = bounceVelocity;
@@ -74,14 +103,31 @@ public class HookedHandler extends StageHandler{
             fTD.hookLoc = fTD.hookLoc.add(fTD.hookVel);
         }
         //check pressure and result
-        if (fTD.pressure > fTD.rD.maxPressure) fTD.pD.p.sendMessage("failed because of large pressure");
-        if (fTD.pressure < fTD.failPressure * fTD.fD.difficulty) fTD.pD.p.sendMessage("failed because of small pressure");
+        if (fTD.pressure > fTD.rD.maxPressure) {
+            try {
+                AchievementUtil.broadCast(fTD.pD.p, ExtraStringListData.random("default_fishing_failure_break"), 32);
+                SoundHandler.playSoundAtLoc(fTD.hookLoc, (SoundData) FileType.SOUND.map.get("default_failure"));
+                SoundHandler.playSoundAtLoc(fTD.hookLoc, (SoundData) FileType.SOUND.map.get("default_break"));
+            } catch (Exception ignored) {
+            }
+            fTD.renderBreakString();
+            fTD.kill();
+        }
+        if (fTD.pressure < fTD.failPressure * fTD.difficulty) {
+            try {
+                AchievementUtil.broadCast(fTD.pD.p, ExtraStringListData.random("default_fishing_failure_loose"), 32);
+                SoundHandler.playSoundAtLoc(fTD.hookLoc, (SoundData) FileType.SOUND.map.get("default_failure"));
+            } catch (Exception ignored) {
+            }
+            fTD.timer = 0;
+            fTD.kill();
+        }
 
         fTD.distanceSuccessPercentage = 1 - (fTD.distance - fTD.getDistance) / (fTD.stdDistance - fTD.getDistance);
         if (fTD.distanceSuccessPercentage > 1) fTD.distanceSuccessPercentage = 1;
         if (fTD.distanceSuccessPercentage < 0) fTD.distanceSuccessPercentage = 0;
 
-        fTD.vitalitySuccessPercentage = 1 - fTD.vitality / fTD.refVitality;
+        fTD.vitalitySuccessPercentage = 1 - (fTD.vitality * fTD.difficulty) / fTD.refVitality;
         if (fTD.vitalitySuccessPercentage > 1) fTD.vitalitySuccessPercentage = 1;
         if (fTD.vitalitySuccessPercentage < 0) fTD.vitalitySuccessPercentage = 0;
 
@@ -98,7 +144,7 @@ public class HookedHandler extends StageHandler{
             } else {
                 randomDirection = randomDirection.normalize();
             }
-            double velocity = fTD.r.nextDouble() * fTD.vitality / (fTD.refVitality * fTD.fD.difficulty) * fTD.fD.difficulty * fTD.randomVelocity;
+            double velocity = fTD.r.nextDouble() * fTD.vitality / (fTD.refVitality * fTD.difficulty) * fTD.difficulty * fTD.randomVelocity;
             fTD.randomVel = randomDirection.multiply(velocity);
         }
         fTD.hookVel = fTD.randomVel;
@@ -118,56 +164,36 @@ public class HookedHandler extends StageHandler{
 
     private void hotBarMsg(FishingTaskData fTD) {
 
-        int distanceStringIndex = (int) Math.floor(fTD.distanceSuccessPercentage * 16);
-        if (distanceStringIndex > 15) distanceStringIndex = 15;
-        if (distanceStringIndex < 0) distanceStringIndex = 0;
-
-        ExtraStringListData dSL = (ExtraStringListData) FileType.EXTRA_STRING_LIST.map.get("distance_status");
-        String dS = percentToChatColor(fTD, fTD.distanceSuccessPercentage, 16) + FormatHandler.format(dSL.extraStringList.get(distanceStringIndex), false);
+        int distanceIndex = (int) Math.floor(fTD.distanceSuccessPercentage * 16);
+        if (distanceIndex > 15) distanceIndex = 15;
+        if (distanceIndex < 0) distanceIndex = 0;
+        String dS = ExtraStringListData.get("default_fishing_distance_status", distanceIndex);
 
         StringBuilder pressureBarString = new StringBuilder();
-        for (double i = 0; i < fTD.rD.maxPressure; i = i + 0.1) {
+        for (double i = fTD.failPressure * fTD.difficulty; i < fTD.rD.maxPressure; i = i + 0.05) {
             if (i < fTD.pressure) {
-                pressureBarString.append(FormatHandler.format(((ExtraStringListData) FileType.EXTRA_STRING_LIST.map.get("pressure_status")).extraStringList.get(0), false));
+                pressureBarString.append(ExtraStringListData.get("default_fishing_pressure_status", 1));
             } else {
-                pressureBarString.append(FormatHandler.format(((ExtraStringListData) FileType.EXTRA_STRING_LIST.map.get("pressure_status")).extraStringList.get(1), false));
+                pressureBarString.append(ExtraStringListData.get("default_fishing_pressure_status", 0));
             }
         }
+        String pS = pressureBarString.toString();
 
         int vitalityIndex = 0;
-        if (fTD.vitality <= fTD.refVitality * fTD.fD.difficulty * 1) vitalityIndex = 0;
-        if (fTD.vitality <= fTD.refVitality * fTD.fD.difficulty * 0.6) vitalityIndex = 1;
-        if (fTD.vitality <= fTD.refVitality * fTD.fD.difficulty * 0.3) vitalityIndex = 2;
+        if (fTD.vitality <= fTD.refVitality * fTD.difficulty * 1) vitalityIndex = 0;
+        if (fTD.vitality <= fTD.refVitality * fTD.difficulty * 0.5) vitalityIndex = 1;
+        if (fTD.vitality <= fTD.refVitality * fTD.difficulty * 0.2) vitalityIndex = 2;
         if (fTD.vitality <= 0) vitalityIndex = 3;
+        String vS =  ExtraStringListData.get("default_fishing_vitality_status", vitalityIndex);
+        try {
+            String format = fTD.hotBarFormat.get(1);
+            if (format.contains("%distance%")) format = format.replaceAll("%distance%", dS);
+            if (format.contains("%pressure%")) format = format.replaceAll("%pressure%", pS);
+            if (format.contains("%vitality%")) format = format.replaceAll("%vitality%", vS);
+            fTD.pD.hotBarMsg = FormatHandler.format(format, false);
+            fTD.pD.p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(fTD.pD.hotBarMsg));
+        } catch (Exception ignored) {
 
-        ExtraStringListData vSL = (ExtraStringListData) FileType.EXTRA_STRING_LIST.map.get("vitality_status");
-
-        String vS = FormatHandler.format(vSL.extraStringList.get(vitalityIndex), false);
-        fTD.pD.hotBarMsg = dS + " " + pressureBarString + " " + vS + fTD.vitalitySuccessPercentage * fTD.distanceSuccessPercentage;
-        fTD.pD.p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(fTD.pD.hotBarMsg));
-    }
-
-    private ChatColor percentToChatColor(FishingTaskData fTD, double d, int stateCount) {
-        int index = (int) Math.floor(d * 16);
-        if (index > 15) index = 15;
-        if (index < 0) index = 0;
-
-        int r1 = 255;
-        int g1 = 214;
-        int b1 = 201;
-        int r2 = 231;
-        int g2 = 248;
-        int b2 = 255;
-        int rc = (int) Math.ceil(d * (r2 - r1) + r1);
-        int gc = (int) Math.ceil(d * (g2 - g1) + g1);
-        int bc = (int) Math.ceil(d * (b2 - b1) + b1);
-
-        if (index == 15) {
-            rc = 142;
-            gc = 255;
-            bc = 142;
         }
-
-        return ColorHandler.gen(rc, gc, bc);
     }
 }

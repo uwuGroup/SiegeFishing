@@ -50,11 +50,14 @@ public class SiegeRegionListener implements org.bukkit.event.Listener {
             }
         }
 
-        if (!pD.unlockRegionNameList.contains(regionName)) {
-            pD.unlockRegionNameList.add(regionName);
+        if (!pD.unlockRegionNameMap.containsKey(regionName)) {
+            pD.unlockRegionNameMap.put(regionName, 1);
             p.sendTitle(regionName, findMessage, 10, 70, 20);
         } else {
+            int amount = pD.unlockRegionNameMap.get(regionName);
             if (!regionName.equals(pD.lastRegionName)) {
+                pD.unlockRegionNameMap.remove(regionName);
+                pD.unlockRegionNameMap.put(regionName, amount + 1);
                 p.sendTitle(arriveMessage, regionName, 10, 70, 20);
             }
         }

@@ -21,7 +21,9 @@ public class ConfigFileIO extends FileIO {
     public enum Map {
         REFRESH_DELAY("refreshDelay", (int) 0, VerifierType.INTEGER, true),
         TRAIL_DISTANCE("trailDistance", 0.7, VerifierType.DOUBLE, true),
-        TRAIL_DENSITY_BIAS_FACTOR("trailDensityBiasFactor", 1, VerifierType.DOUBLE, true);
+        TRAIL_DENSITY_BIAS_FACTOR("trailDensityBiasFactor", 1, VerifierType.DOUBLE, true),
+        FISH_BOX_NAME("fishBoxName", "", VerifierType.STRING, true),
+        FISH_BOOK_NAME("fishBookName", "", VerifierType.STRING, true);
 
         public String path;
         public Object o;

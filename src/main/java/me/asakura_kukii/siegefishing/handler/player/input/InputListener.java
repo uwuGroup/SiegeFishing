@@ -23,6 +23,13 @@ public class InputListener implements org.bukkit.event.Listener {
     public static HashMap<UUID, Integer> itemPickUpMap = new HashMap<>();
 
     @EventHandler
+    public void onConsume(PlayerItemConsumeEvent e) {
+        Player p = e.getPlayer();
+        PlayerData pD = PlayerDataHandler.getPlayerData(p);
+        e.setCancelled(nonToggleInput(-1, InputKeyType.ITEM_CONSUME, p));
+    }
+
+    @EventHandler
     public void onClick(PlayerInteractEvent e) {
         Player p = e.getPlayer();
         //Checking PlayerData

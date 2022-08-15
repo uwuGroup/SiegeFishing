@@ -6,6 +6,7 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.entity.Player;
 
 import java.util.Objects;
 
@@ -27,8 +28,6 @@ public class ParticleHandler {
         pD.biasZ = 0;
         pD.material = m;
         return pD;
-
-
     }
 
     public static void spawnParticleAtLoc(Location loc, ParticleData pD, boolean force) {
@@ -41,6 +40,20 @@ public class ParticleHandler {
                 Objects.requireNonNull(l.getWorld()).spawnParticle(pD.particle, l, pD.count, pD.sizeX, pD.sizeY, pD.sizeZ, pD.extra, pD.material.createBlockData(), force);
             } else {
                 Objects.requireNonNull(l.getWorld()).spawnParticle(pD.particle, l, pD.count, pD.sizeX, pD.sizeY, pD.sizeZ, pD.extra, null,  force);
+            }
+        }
+    }
+
+    public static void spawnParticleAtLocForPlayer(Player p, Location loc, ParticleData pD) {
+        Location l = loc.add(pD.biasX, pD.biasY, pD.biasZ);
+        if (pD.particle != null) {
+            if(pD.particle == Particle.REDSTONE) {
+                Particle.DustOptions dust = new Particle.DustOptions(Color.fromRGB(pD.colorR, pD.colorG, pD.colorB), pD.extra);
+                p.spawnParticle(pD.particle, l, pD.count, pD.sizeX, pD.sizeY, pD.sizeZ, pD.extra, dust);
+            } else if ((pD.particle == Particle.BLOCK_CRACK || pD.particle == Particle.BLOCK_DUST || pD.particle == Particle.FALLING_DUST) && pD.material != null) {
+                p.spawnParticle(pD.particle, l, pD.count, pD.sizeX, pD.sizeY, pD.sizeZ, pD.extra, pD.material.createBlockData());
+            } else {
+                p.spawnParticle(pD.particle, l, pD.count, pD.sizeX, pD.sizeY, pD.sizeZ, pD.extra, null);
             }
         }
     }

@@ -26,8 +26,17 @@ public class PositionHandler {
     public static Location locRelativeToLivingEntitySight(LivingEntity entity, Double x, Double y, Double z) {
         Vector rightVector = rightVectorToLivingEntitySight(entity).multiply(x);
         Vector upVector = upVectorToLivingEntitySight(entity).multiply(y);
+
+        Location l = entity.getEyeLocation();
+        if (entity.getVehicle() instanceof Boat) {
+            Location l1 = entity.getLocation().clone();
+            l1.setY(0);
+            l1.setY(entity.getVehicle().getLocation().add(new Vector(0, 1.17, 0)).clone().getY());
+            l = l1.clone();
+        }
+
         Vector locVector = entity.getEyeLocation().getDirection().normalize().multiply(z).add(rightVector).add(upVector);
-        return entity.getEyeLocation().add(locVector);
+        return l.add(locVector);
     }
 
     public static Location locRelativeToLivingEntitySightUsingAngle(LivingEntity entity, Double thetaBias, Double pitchBias, Double distanceMultiplier) {

@@ -1,0 +1,8 @@
+identifier: default_button_2
+
+displayName: "&c&l出售"
+loreList:
+  -
+  - "&c&l左键点击出售可出售的鱼鱼"
+material: COOKIE
+customModelIndex: 1

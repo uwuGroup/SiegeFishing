@@ -18,12 +18,15 @@ public class PlayerDataListener implements org.bukkit.event.Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-        PlayerDataHandler.loadPlayerData(p);
+        PlayerData pD = PlayerDataHandler.loadPlayerData(p);
+        SiegeMountHandler.communicate(pD);
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
+        PlayerData pD = PlayerDataHandler.getPlayerData(p);
+        SiegeMountHandler.communicate(pD);
         PlayerDataHandler.unloadPlayerData(p);
     }
 

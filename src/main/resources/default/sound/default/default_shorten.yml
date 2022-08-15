@@ -1,0 +1,7 @@
+identifier: default_shorten
+
+sound: operate
+volumeMin: 1
+volumeMax: 1
+pitchMin: 1.3
+pitchMax: 1.4

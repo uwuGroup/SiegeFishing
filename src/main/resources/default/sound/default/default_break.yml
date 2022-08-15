@@ -1,0 +1,7 @@
+identifier: default_break
+
+sound: break
+volumeMin: 1
+volumeMax: 1
+pitchMin: 0.7
+pitchMax: 1.0

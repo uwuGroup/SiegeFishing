@@ -5,8 +5,11 @@ import me.asakura_kukii.siegefishing.config.data.FileType;
 import me.asakura_kukii.siegefishing.config.data.addon.FishSessionData;
 import me.asakura_kukii.siegefishing.config.data.basic.ConfigData;
 import me.asakura_kukii.siegefishing.config.io.FileIO;
+import me.asakura_kukii.siegefishing.handler.method.boat.BoatListener;
+import me.asakura_kukii.siegefishing.handler.method.entity.TagEntityDataListener;
 import me.asakura_kukii.siegefishing.handler.method.fishingbeta.FishingTaskData;
 import me.asakura_kukii.siegefishing.handler.method.inventory.SiegeInventoryListener;
+import me.asakura_kukii.siegefishing.handler.method.shovel.ShovelTaskData;
 import me.asakura_kukii.siegefishing.handler.player.input.InputHandler;
 import me.asakura_kukii.siegefishing.handler.player.PlayerDataListener;
 import me.asakura_kukii.siegefishing.handler.method.region.SiegeRegionListener;
@@ -36,6 +39,8 @@ public class SiegeFishing{
 	public static void eventRegister(Plugin plugin) {
 		Bukkit.getPluginManager().registerEvents(new PlayerDataListener(), plugin);
 		Bukkit.getPluginManager().registerEvents(new InputListener(), plugin);
+		Bukkit.getPluginManager().registerEvents(new BoatListener(), plugin);
+		Bukkit.getPluginManager().registerEvents(new TagEntityDataListener(), plugin);
 		Bukkit.getPluginManager().registerEvents(new SiegeRegionListener(), plugin);
 		Bukkit.getPluginManager().registerEvents(new SiegeInventoryListener(), plugin);
 	}
@@ -43,6 +48,7 @@ public class SiegeFishing{
 	public static void onEnable(Server s, File pF, String pN, String pP, String cPP, Plugin p) {
 
 		if (server != null) {
+			//reloading
 			FileIO.saveAll();
 		}
 
@@ -77,12 +83,15 @@ public class SiegeFishing{
 					FishSessionData fSD = (FishSessionData) fD;
 					fSD.updateFishSession();
 				}
+				for (ShovelTaskData sTD : ShovelTaskData.shovelTaskDataMap.values()) {
+					sTD.update();
+				}
 				for (FishingTaskData fTD : FishingTaskData.fishingTaskMap.values()) {
 					fTD.update();
 				}
-
+				FishingTaskData.killLast();
+				ShovelTaskData.killLast();
 			}
 		}.runTaskTimer(SiegeFishing.pluginInstance, 0, ConfigData.refreshDelay));
 	}
-
 }

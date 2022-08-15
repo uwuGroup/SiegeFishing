@@ -1,4 +1,4 @@
-identifier: vitality_status
+identifier: default_fishing_vitality_status
 
 extraStringList:
   - "@vitality_0#"

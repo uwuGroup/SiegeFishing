@@ -1,0 +1,7 @@
+identifier: default_swim
+
+sound: entity.player.swim
+volumeMin: 0.5
+volumeMax: 0.5
+pitchMin: 0.7
+pitchMax: 0.9

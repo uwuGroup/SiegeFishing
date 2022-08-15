@@ -1,0 +1,14 @@
+identifier: default_splash_white
+particle: REDSTONE
+count: 10
+extra: 3
+sizeX: 0.5
+sizeY: 0.5
+sizeZ: 0.5
+colorR: 255
+colorG: 255
+colorB: 255
+biasX: 0
+biasY: 0
+biasZ: 0
+material: GRASS_BLOCK

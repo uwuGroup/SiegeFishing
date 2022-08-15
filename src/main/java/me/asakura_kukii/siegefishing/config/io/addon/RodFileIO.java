@@ -30,7 +30,6 @@ public class RodFileIO extends FileIO {
         AVERAGE_WAIT_TIME("avgWaitTime", (double) 600, VerifierType.DOUBLE, true),
         LUCK_BOOST("luckBoost", (double) 0.5, VerifierType.DOUBLE, true),
         MAX_PRESSURE("maxPressure", (double) 30, VerifierType.DOUBLE, true),
-        MAX_SWING_DISTANCE("maxSwingDistance", (double) 7, VerifierType.DOUBLE, true),
         SWING_VELOCITY("swingVelocity", (double) 0.2, VerifierType.DOUBLE, true),
         ROD_END_BIAS_X("rodEndBiasX", (double) 0.4, VerifierType.DOUBLE, true),
         ROD_END_BIAS_Y("rodEndBiasY", (double) 0.4, VerifierType.DOUBLE, true),

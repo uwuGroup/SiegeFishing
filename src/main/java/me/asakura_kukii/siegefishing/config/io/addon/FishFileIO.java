@@ -23,17 +23,16 @@ public class FishFileIO extends FileIO {
     public enum Map {
         DISPLAY_NAME("displayName", (String) "", VerifierType.STRING, true),
         LORE_LIST("loreList", new ArrayList<String>(), VerifierType.LIST_STRING, false),
+        EXTRA_ITEM_LORE_LIST("extraItemLoreList", new ArrayList<String>(), VerifierType.LIST_STRING, false),
+        EXTRA_TYPE_LORE_LIST("extraTypeLoreList", new ArrayList<String>(), VerifierType.LIST_STRING, false),
         MATERIAL("material", (Material) Material.BRICK, VerifierType.MATERIAL, false),
         CUSTOM_MODEL_INDEX("customModelIndex", (int) 0, VerifierType.INTEGER, true),
-        SPAWN_TIME_MIN("spawnTimeMin", (double) 0, VerifierType.DOUBLE, true),
-        SPAWN_TIME_MAX("spawnTimeMax", (double) 24, VerifierType.DOUBLE, true),
         WEIGHT_MIN("weightMin", (double) 0.5, VerifierType.DOUBLE, true),
         WEIGHT_MAX("weightMax", (double) 1.0, VerifierType.DOUBLE, true),
-        DIFFICULTY("difficulty", (double) 25, VerifierType.DOUBLE, true),
-        ANNOYING_FACTOR("annoyingFactor", (double) 1, VerifierType.DOUBLE, true),
         COLLECTOR_DESCRIPTION_LIST("collectorDescriptionList", new ArrayList<String>(), VerifierType.LIST_STRING, false),
-        POSSIBLE_CONVERSATION_LIST("possibleConversationList", new ArrayList<String>(), VerifierType.LIST_STRING, false);
-
+        POSSIBLE_CONVERSATION_LIST("possibleConversationList", new ArrayList<String>(), VerifierType.LIST_STRING, false),
+        RARITY_LEVEL("rarityLevel", 0, VerifierType.INTEGER, true)
+        ;
         public String path;
         public Object o;
         public VerifierType vT;

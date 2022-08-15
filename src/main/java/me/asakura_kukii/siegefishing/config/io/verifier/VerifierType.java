@@ -28,7 +28,12 @@ public enum VerifierType {
     ITEM_STACK(new VerifyItemStack()),
     LIST_ITEM_STACK(new VerifyItemStackList()),
 
+    MAP_INTEGER_DOUBLE(new VerifyInteger2DoubleMap()),
+
+    MAP_INTEGER_ITEM_STACK(new VerifyInteger2ItemStackMap()),
+
     PARTICLE(new VerifyParticle()),
+    POTION(new VerifyPotion()),
 
     IMAGE(new VerifyImage()),
 
@@ -45,6 +50,8 @@ public enum VerifierType {
     STRING_COLORED_STRING_MAP(new VerifyString2StringMap()),
 
     STRING_INTEGER_MAP(new VerifyString2IntegerMap()),
+
+    MAP_LOOSE_FILE_DATA_DOUBLE(new VerifyLooseFileData2DoubleMap()),
     ;
 
     public Verifier f;

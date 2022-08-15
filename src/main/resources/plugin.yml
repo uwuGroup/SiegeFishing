@@ -14,6 +14,6 @@ permissions:
       siegefishing.reload: true
       siegefishing.item: true
       siegefishing.util: true
-softdepend: [ProtocolLib]
+depend: [ProtocolLib, SiegeMountHandler]
 author:
    Asakura_kukii

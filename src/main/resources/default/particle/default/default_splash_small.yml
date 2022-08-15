@@ -1,0 +1,14 @@
+identifier: default_splash_small
+particle: WATER_SPLASH
+count: 1
+extra: 10
+sizeX: 2
+sizeY: 0
+sizeZ: 2
+colorR: 255
+colorG: 0
+colorB: 0
+biasX: 0
+biasY: 0
+biasZ: 0
+material: GRASS_BLOCK

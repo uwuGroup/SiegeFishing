@@ -1,0 +1,9 @@
+identifier: default_unknown
+
+displayName: "&f&l「猜猜我是谁？」"
+loreList:
+  - ""
+  - "&f@placeholder_2#&f&l@rarity# 还没抓到过噢"
+  - ""
+material: COOKIE
+customModelIndex: 2

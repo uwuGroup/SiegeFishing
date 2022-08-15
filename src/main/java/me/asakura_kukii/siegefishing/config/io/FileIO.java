@@ -7,12 +7,13 @@ import me.asakura_kukii.siegefishing.config.io.verifier.Verifier;
 import me.asakura_kukii.siegefishing.config.io.verifier.VerifierType;
 import me.asakura_kukii.siegefishing.utility.format.ColorHandler;
 import org.apache.commons.io.FileUtils;
-import org.apache.logging.log4j.core.net.TcpSocketManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.*;
 
 import static me.asakura_kukii.siegefishing.SiegeFishing.consolePluginPrefix;
@@ -31,7 +32,6 @@ public abstract class FileIO {
     }
 
     public static FileData loadOnDemand(String identifier, String fN, FileType fT) {
-        Bukkit.getLogger().info("loading");
         File f = new File(fT.folder, fN.replaceAll(fT.typeName + ".", ""));
         if (fT.map.containsKey(identifier)) {
             if (!f.exists()) {
@@ -67,20 +67,25 @@ public abstract class FileIO {
         fileMessageMapper.clear();
         invalidFileNameList.clear();
 
+
         for(FileType fT : FileType.getFileTypeList()) {
+            boolean valid = true;
             if (!fT.loadOption.equals(IOOption.LOAD_ALL_ON_START)) {
                 continue;
             }
-
             fT.map.clear();
-            if (fT.folder.exists()) {
-                loadDefaultFile(fT);
-                loadFileTreeRecursively(fT.folder, fT, "");
+            if (!fT.folder.exists()) FileUtil.loadSubfolder(fT.folder.getName());
+            List<String> defaultIdentifierList = checkDefaultFile(fT);
+            loadFileTreeRecursively(fT.folder, fT, "");
+            for (String s : defaultIdentifierList) {
+                if (!fT.map.containsKey(s)) {
+                    valid = false;
+                }
+            }
+            if (valid) {
                 server.getConsoleSender().sendMessage(ColorHandler.ANSI_GREEN + consolePluginPrefix + ColorHandler.ANSI_WHITE + "Loaded " + fT.map.keySet().size() + " " + fT.typeName);
             } else {
-                FileUtil.loadSubfolder(fT.folder.getName());
-                loadDefaultFile(fT);
-                loadFileTreeRecursively(fT.folder, fT, "");
+                server.getConsoleSender().sendMessage(ColorHandler.ANSI_GREEN + consolePluginPrefix + ColorHandler.ANSI_WHITE + "Default files load failure" + fT.typeName);
             }
         }
     }
@@ -101,7 +106,37 @@ public abstract class FileIO {
                 saveFile(fD, true);
             }
             server.getConsoleSender().sendMessage(ColorHandler.ANSI_GREEN + consolePluginPrefix + ColorHandler.ANSI_WHITE + "Saved " + fT.map.keySet().size() + " " + fT.typeName);
-            fT.map.clear();
+        }
+    }
+
+    public static void saveAllOnDemand() {
+        for(FileType fT : FileType.getFileTypeList()) {
+            if (!fT.saveOption.equals(IOOption.SAVE_ALL_ON_STOP)) {
+                continue;
+            }
+            if (!fT.folder.exists()) {
+                FileUtil.loadSubfolder(fT.folder.getName());
+            }
+            for (FileData fD : fT.map.values()) {
+                saveFile(fD, true);
+            }
+        }
+    }
+
+    public static void backUpPlayerData() {
+        try {
+            Calendar ca = Calendar.getInstance();
+
+
+
+            File backUpFolder = FileUtil.loadSubfolder("backUp");
+            File currentTimeSignatureFolder = new File(backUpFolder, ca.get(Calendar.MONTH) + "-" + ca.get(Calendar.DATE) + "-" + ca.get(Calendar.HOUR)  + "-" + ca.get(Calendar.MINUTE));
+            currentTimeSignatureFolder.mkdir();
+            if (FileType.PLAYER_DATA.folder.exists()) {
+                FileUtils.copyDirectoryToDirectory(FileType.PLAYER_DATA.folder, currentTimeSignatureFolder);
+            }
+        } catch (Exception ignored) {
+
         }
     }
 
@@ -117,7 +152,6 @@ public abstract class FileIO {
     }
 
     public static FileData loadFile(File f, String fN, FileType fT, String estimatedIdentifier) {
-        Bukkit.getLogger().info(fN);
         FileConfiguration fC = YamlConfiguration.loadConfiguration(f);
         fileStatusMapper.put(fN, true);
         fileMessageMapper.put(fN, "");
@@ -155,7 +189,6 @@ public abstract class FileIO {
     }
 
     public static void saveFile(FileData fD, boolean force) {
-        Bukkit.getLogger().info("saving");
         File f = fD.f;
         if (!force && f.exists()) {
             return;
@@ -175,12 +208,13 @@ public abstract class FileIO {
         }
     }
 
-    public static void loadDefaultFile(FileType fT) {
+    public static List<String> checkDefaultFile(FileType fT) {
         try {
-            FileUtil.copyJarResourcesRecursively(fT.folder, "default/" + fT.typeName);
+            return FileUtil.checkJarResources(fT.folder, "default/" + fT.typeName);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return new ArrayList<>();
     }
 
     public static void putError(String fileName) {

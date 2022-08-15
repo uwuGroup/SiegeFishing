@@ -1,0 +1,7 @@
+identifier: default_lengthen
+
+sound: operate
+volumeMin: 1
+volumeMax: 1
+pitchMin: 0.9
+pitchMax: 1.0

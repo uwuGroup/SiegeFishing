@@ -13,6 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public abstract class ItemData extends FileData {
@@ -27,7 +28,7 @@ public abstract class ItemData extends FileData {
         super(identifier, fileName, fT);
     }
 
-    public abstract ItemStack finalizeGenerateItemStack(ItemStack iS, PlayerData pD, int level);
+    public abstract ItemStack finalizeGenerateItemStack(ItemStack iS, PlayerData pD, int extra);
 
     public abstract boolean trigger(int triggerSlot, InputKeyType iKT, InputSubType iST, PlayerData pD, ItemStack iS);
 
@@ -59,7 +60,7 @@ public abstract class ItemData extends FileData {
         return null;
     }
 
-    public static ItemStack getItemStack(ItemData iD, PlayerData pD, int amount, int level) {
+    public static ItemStack getItemStack(ItemData iD, PlayerData pD, int amount, int extra) {
         ItemStack iS = new ItemStack(iD.material);
         iS = NBTHandler.set(iS, "id", iD.identifier, false);
         iS = NBTHandler.set(iS, "type", iD.fT.typeName, false);
@@ -78,31 +79,23 @@ public abstract class ItemData extends FileData {
         iM.setUnbreakable(true);
 
         iS.setItemMeta(iM);
-        iS = iD.finalizeGenerateItemStack(iS, pD, level);
+        iS = iD.finalizeGenerateItemStack(iS, pD, extra);
         iS.setAmount(amount);
         return iS;
     }
 
-    public static void finalizeSendItemStack(ItemStack iS, PlayerData pD, int slot, int level) {
+    public static void sendItemStack(ItemData iD, PlayerData pD, int amount, int extra) {
+        ItemStack iS = ItemData.getItemStack(iD, pD, amount, extra);
+
+        if (pD.p.getInventory().firstEmpty() == -1) {
+            Objects.requireNonNull(pD.p.getLocation().getWorld()).dropItem(pD.p.getEyeLocation(), iS);
+        } else {
+            pD.p.getInventory().setItem(pD.p.getInventory().firstEmpty(), iS);
+        }
+    }
+
+    public static void sendItemStack(ItemData iD, PlayerData pD, int amount, int extra, int slot) {
+        ItemStack iS = ItemData.getItemStack(iD, pD, amount, extra);
         pD.p.getInventory().setItem(slot, iS);
-    }
-
-    public static void sendItemStack(ItemData iD, PlayerData pD, int amount) {
-        sendItemStack(iD, pD, amount, pD.p.getInventory().firstEmpty());
-    }
-
-    public static void sendItemStack(ItemData iD, PlayerData pD, int amount, int slot) {
-        ItemStack iS = ItemData.getItemStack(iD, pD, amount, randomizeLevel());
-        finalizeSendItemStack(iS, pD, slot, randomizeLevel());
-    }
-
-    public static void sendItemStack(ItemData iD, PlayerData pD, int amount, int slot, int level) {
-        ItemStack iS = ItemData.getItemStack(iD, pD, amount, level);
-        finalizeSendItemStack(iS, pD, slot, (int)level);
-    }
-
-    public static int randomizeLevel() {
-        Random r = new Random();
-        return (int)Math.floor(r.nextDouble()*10.0+1.0);
     }
 }

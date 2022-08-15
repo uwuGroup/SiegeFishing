@@ -19,17 +19,26 @@ public enum FileType {
     BASIC_ITEM(         "basicItem",            new BasicItemFileIO(),          true,   IOOption.LOAD_ALL_ON_START,     IOOption.NO_SAVE),
     PARTICLE(           "particle",             new ParticleFileIO(),           false,  IOOption.LOAD_ALL_ON_START,     IOOption.NO_SAVE),
     SOUND(              "sound",                new SoundFileIO(),              false,  IOOption.LOAD_ALL_ON_START,     IOOption.NO_SAVE),
+    POTION(             "potion",               new PotionFileIO(),             false,  IOOption.LOAD_ALL_ON_START,     IOOption.NO_SAVE),
 
     FISH(               "fish",                 new FishFileIO(),               true,   IOOption.LOAD_ALL_ON_START,     IOOption.NO_SAVE),
     ROD(                "rod",                  new RodFileIO(),                true,   IOOption.LOAD_ALL_ON_START,     IOOption.NO_SAVE),
+    SHOVEL("shovel", new ShovelFileIO(), true, IOOption.LOAD_ALL_ON_START, IOOption.NO_SAVE),
+    BOAT("boat", new BoatFileIO(), true, IOOption.LOAD_ALL_ON_START, IOOption.NO_SAVE),
+    FOOD("food", new FoodFileIO(), true, IOOption.LOAD_ALL_ON_START, IOOption.NO_SAVE),
+    BAIT("bait", new BaitFileIO(), true, IOOption.LOAD_ALL_ON_START, IOOption.NO_SAVE),
+    AWARD("award", new AwardFileIO(), true, IOOption.LOAD_ALL_ON_START, IOOption.NO_SAVE),
 
     CONFIG(             "config",               new ConfigFileIO(),             false,  IOOption.LOAD_ALL_ON_START,     IOOption.NO_SAVE),
 
-
-
+    ENTITY_COLLECTOR_DATA_FILE("collector", new EntityCollectorFileIO(), false, IOOption.LOAD_ALL_ON_START, IOOption.NO_SAVE),
+    ENTITY_SHOP_DATA_FILE("shop", new EntityShopDataFileIO(), false, IOOption.LOAD_ALL_ON_START, IOOption.NO_SAVE),
+    ENTITY_CONTAINER_DATA_FILE("container", new EntityContainerFileIO(), false, IOOption.LOAD_ALL_ON_START, IOOption.NO_SAVE),
+    ENTITY_MARKET_DATA_FILE("market", new EntityMarketDataFileIO(), false, IOOption.LOAD_ALL_ON_START, IOOption.NO_SAVE),
 
     PLAYER_DATA(        "playerData",           new PlayerDataFileIO(),         false,  IOOption.LOAD_ON_DEMAND,        IOOption.SAVE_ALL_ON_STOP),
     FISH_REGION(        "fishRegion",           new FishRegionFileIO(),         false,  IOOption.LOAD_ALL_ON_START,     IOOption.NO_SAVE),
+    CRAB_REGION(        "crabRegion",           new CrabRegionFileIO(),         false,  IOOption.LOAD_ALL_ON_START,     IOOption.NO_SAVE),
     FISH_SESSION(       "fishSession",          new FishSessionFileIO(),        false,  IOOption.LOAD_ALL_ON_START,     IOOption.NO_SAVE);
 
     public final HashMap<String, FileData> map;

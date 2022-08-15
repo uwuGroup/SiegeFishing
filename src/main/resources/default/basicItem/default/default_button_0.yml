@@ -1,8 +1,8 @@
 identifier: default_button_0
 
-displayName: "&c&lLast page"
+displayName: "&c&l上一页"
 loreList:
 -
--
+- "&c&l左键点击翻至上一页"
 material: COOKIE
 customModelIndex: 1
